@@ -1,0 +1,19 @@
+---
+import '../styles/global.css';
+const { title = 'My Book', description = 'A modern, minimal book site' } = Astro.props;
+---
+<html lang="zh-CN" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body class="h-full font-sans">
+    <slot />
+    <script src="../js/scroll-helper.js"></script>
+  </body>
+  
+</html>
+
+

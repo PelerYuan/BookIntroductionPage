@@ -1,0 +1,11 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Reviews from '../components/Reviews.astro';
+import { bookData } from '../data/bookData.js';
+
+const { bookTitle, reviews } = bookData;
+---
+
+<PageLayout title={`${bookTitle} - Reviews`} currentPath="/book/reviews">
+  <Reviews reviews={reviews} />
+</PageLayout>

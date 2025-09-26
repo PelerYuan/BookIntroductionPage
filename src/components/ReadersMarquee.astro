@@ -1,0 +1,34 @@
+---
+export interface Props {
+  readers: Array<{ name: string; avatar?: string; note?: string }>;
+}
+const { readers }: Props = Astro.props;
+---
+<section class="section bg-slate-50">
+  <div class="container-narrow">
+    <div class="sticky top-0 z-10 py-4">
+      <div class="divider-blue"></div>
+      <p class="mt-4 text-center text-slate-500">正在阅读本书的同学</p>
+    </div>
+    <div class="relative overflow-hidden">
+      <div class="flex gap-6 animate-[marquee_30s_linear_infinite] will-change-transform" style="--tw: 1">
+        {readers.concat(readers).map((r, i) => (
+          <div class="flex items-center gap-3 px-4 py-3 rounded-full bg-white shadow border border-slate-200">
+            {r.avatar && <img src={r.avatar} alt={r.name} class="h-8 w-8 rounded-full object-cover" />}
+            <span class="font-medium">{r.name}</span>
+            {r.note && <span class="text-slate-500">{r.note}</span>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  </style>
+</section>
+
+

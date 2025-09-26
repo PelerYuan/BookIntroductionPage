@@ -1,0 +1,143 @@
+---
+export interface Props {
+  coverSrc: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+}
+const { coverSrc, title, subtitle, description }: Props = Astro.props;
+---
+<section id="hero" class="section bg-gradient-to-br from-blue-50 via-slate-50 to-blue-50/30 relative overflow-hidden flex items-center">
+  <!-- 简洁的蓝色背景 -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-100/20 via-transparent to-blue-200/10"></div>
+
+  <div class="container-narrow relative z-10 w-full flex flex-col justify-center">
+    <!-- 使用黄金比例和有机布局 -->
+    <div class="grid grid-cols-1 lg:grid-cols-phi gap-16 items-center">
+      <!-- 书籍封面区域 - 简洁设计 -->
+      <div class="book-cover-container group transform -rotate-2 hover:rotate-0 transition-all duration-700 flowing-element">
+        <!-- 多层阴影系统创造深度 -->
+        <div class="relative">
+          <!-- 背景装饰层 -->
+          <div class="absolute -inset-4 bg-blue-200/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-700"></div>
+          
+          <!-- 主要封面容器 -->
+          <div class="aspect-[3/4] w-full overflow-hidden rounded-3xl shadow-layer-5 bg-slate-200 transform transition-all duration-700 hover:scale-105 hover:shadow-layer-5 relative organic-card">
+            <img 
+              src={coverSrc} 
+              alt={title} 
+              class="h-full w-full object-cover transform transition-transform duration-700 group-hover:scale-110" 
+            />
+            
+            <!-- 封面边缘光晕 -->
+            <div class="absolute inset-0 rounded-3xl ring-1 ring-white/20 group-hover:ring-2 group-hover:ring-white/30 transition-all duration-500"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 文字内容区域 - 简洁设计 -->
+      <div class="flex flex-col space-y-10 lg:pl-8 relative">
+        <div class="text-content space-dynamic-2">
+          <h1 class="hero-title text-5xl lg:text-7xl font-black tracking-tight text-black leading-tight animate-fade-in-up">
+            {title}
+          </h1>
+          
+          {subtitle && (
+            <p class="hero-subtitle mt-8 text-xl lg:text-2xl text-slate-600 font-medium animate-slide-in-left" style="animation-delay: 0.2s;">
+              {subtitle}
+            </p>
+          )}
+          
+          {description && (
+            <p class="hero-description mt-10 text-lg lg:text-xl leading-relaxed text-slate-600 max-w-lg animate-slide-in-left" style="animation-delay: 0.4s;">
+              {description}
+            </p>
+          )}
+        </div>
+        
+        <!-- 按钮系统 -->
+        <div class="hero-buttons flex flex-col sm:flex-row gap-6 pt-4 animate-fade-in-up" style="animation-delay: 0.6s;">
+          <a href="#details" class="btn-primary group text-lg px-8 py-5 shadow-layer-3 hover:shadow-layer-5 bg-blue-600 hover:bg-blue-700 text-white flowing-element whitespace-nowrap">
+            <span class="relative z-10">Learn More</span>
+            <span class="ml-3 transform transition-transform group-hover:translate-x-2 relative z-10">→</span>
+          </a>
+          
+          <a href="#reviews" class="btn-outline group text-lg px-8 py-5 shadow-layer-2 hover:shadow-layer-4 border-2 border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400 flowing-element whitespace-nowrap">
+            <span>View Reviews</span>
+            <span class="ml-3 transform transition-transform group-hover:translate-x-2">→</span>
+          </a>
+          
+          <button 
+            id="readOnlineBtn"
+            class="btn-primary group text-lg px-8 py-5 shadow-layer-3 hover:shadow-layer-5 bg-green-600 hover:bg-green-700 text-white flowing-element whitespace-nowrap"
+          >
+            <span class="relative z-10">Read Online</span>
+            <span class="ml-3 transform transition-transform group-hover:translate-x-2 relative z-10">📖</span>
+          </button>
+        </div>
+        
+        <!-- 简洁的视觉引导 -->
+        <div class="flex items-center space-x-4 pt-8 animate-fade-in-up" style="animation-delay: 0.8s;">
+          <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+          <span class="text-sm text-slate-500 font-medium">Scroll down to explore more</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const readOnlineBtn = document.getElementById('readOnlineBtn');
+    
+    if (readOnlineBtn) {
+      readOnlineBtn.addEventListener('click', function() {
+        // 直接在新标签页打开PDF文件
+        const pdfUrl = '/book/pdfs/写给同学的IT书_电子版.pdf';
+        
+        // 在新标签页中打开PDF
+        const newTab = window.open(pdfUrl, '_blank');
+        
+        // 如果新标签页被阻止，显示提示
+        if (!newTab) {
+          alert('Please allow pop-ups for this site to open the PDF in new tab.');
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  /* 书籍封面容器样式 */
+  .book-cover-container {
+    position: relative;
+    perspective: 1200px;
+  }
+  
+  /* 自定义动画延迟 */
+  .animate-fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  .animate-slide-in-left {
+    opacity: 0;
+    animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 1024px) {
+    .book-cover-container {
+      transform: none !important;
+    }
+  }
+  
+  /* 增强的悬停效果 */
+  .book-cover-container:hover .organic-card::before {
+    transform: rotate(45deg) scale(1.3);
+  }
+</style>
+
+
+
+

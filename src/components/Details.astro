@@ -1,0 +1,88 @@
+---
+export interface Props {
+  sections: Array<{ heading: string; content: string }>;
+}
+const { sections }: Props = Astro.props;
+---
+<section id="details" class="section bg-blue-50/30 relative overflow-hidden flex items-center">
+  <!-- 简洁的蓝色背景 -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-100/10 via-transparent to-blue-200/5"></div>
+
+  <div class="container-narrow w-full relative z-10 flex flex-col justify-center">
+    <!-- 标题区域 -->
+    <div class="text-center mb-20 space-dynamic-3">
+      <h2 class="text-4xl md:text-6xl font-black text-black mb-6 animate-fade-in-up">
+        Detailed Introduction
+      </h2>
+      <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+        Deep dive into the core value and unique features of this book
+      </p>
+      <div class="w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
+    </div>
+    
+    <!-- 卡片布局 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 relative">
+      {sections.map((s, index) => (
+        <article 
+          class={`relative flowing-element animate-fade-in-up`}
+          style={`animation-delay: ${0.6 + index * 0.2}s`}
+        >
+          <!-- 卡片容器 -->
+          <div class={`p-10 rounded-3xl border border-blue-200/50 bg-white/95 backdrop-blur-sm transition-all duration-700 hover:scale-105 hover:-translate-y-3 relative organic-card ${
+            index === 0 ? 'shadow-layer-4 transform -rotate-2 lg:translate-x-4' :
+            index === 1 ? 'shadow-layer-3 transform rotate-1 lg:-translate-x-2' :
+            index === 2 ? 'shadow-layer-4 transform -rotate-1 lg:translate-x-6' :
+            'shadow-layer-3 transform rotate-2 lg:-translate-x-4'
+          }`}>
+            
+            <!-- 主要图标 -->
+            <div class="w-16 h-16 flex items-center justify-center mb-8">
+              <span class="text-6xl">
+                {index === 0 ? '🎯' : index === 1 ? '📚' : index === 2 ? '💡' : '👥'}
+              </span>
+            </div>
+            
+            <!-- 内容区域 -->
+            <h3 class="text-3xl font-bold text-slate-800 mb-6 leading-tight">{s.heading}</h3>
+            <p class="text-slate-600 leading-relaxed text-lg">{s.content}</p>
+            
+            <!-- 悬停装饰线条 -->
+            <div class="mt-8 h-1 bg-blue-400 opacity-0 hover:opacity-100 transition-all duration-700 transform scale-x-0 hover:scale-x-100 origin-left"></div>
+          </div>
+        </article>
+      ))}
+    </div>
+    
+
+  </div>
+</section>
+
+<style>
+  /* 自定义动画延迟 */
+  .animate-fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 1024px) {
+    .lg\\:translate-x-4,
+    .lg\\:-translate-x-2,
+    .lg\\:translate-x-6,
+    .lg\\:-translate-x-4 {
+      transform: none !important;
+    }
+  }
+  
+  /* 增强的悬停效果 */
+  .organic-card:hover::before {
+    transform: rotate(45deg) scale(1.4);
+  }
+  
+  /* 卡片悬停时的光效增强 */
+  .organic-card:hover {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(59, 130, 246, 0.1);
+  }
+</style>
+
+

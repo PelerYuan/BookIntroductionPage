@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Details from '../components/Details.astro';
+import Features from '../components/Features.astro';
+import Reviews from '../components/Reviews.astro';
+import Roadmap from '../components/Roadmap.astro';
+import Gallery from '../components/Gallery.astro';
+import ScrollIndicator from '../components/ScrollIndicator.astro';
+import { bookData } from '../data/bookData.js';
+
+const { coverSrc, bookTitle, bookSubtitle, bookDesc, details, reviews, roadmap, features, galleryImages } = bookData;
+
+// Define page section information for scroll indicator
+const pageSections = [
+  { id: 'hero', title: 'Book Introduction' },
+  { id: 'details', title: 'Detailed Introduction' },
+  { id: 'features', title: 'Book Features' },
+  { id: 'reviews', title: 'Reader Reviews' },
+  { id: 'gallery', title: 'Gallery' },
+  { id: 'roadmap', title: 'Update Plan' }
+];
+---
+
+<BaseLayout title={bookTitle}>
+  <Hero coverSrc={coverSrc} title={bookTitle} subtitle={bookSubtitle} description={bookDesc} />
+  <Details sections={details} />
+  <Features features={features} />
+  <Reviews reviews={reviews} />
+  <Gallery images={galleryImages} />
+  <Roadmap items={roadmap} />
+
+  <ScrollIndicator sections={pageSections} />
+</BaseLayout>
+
+

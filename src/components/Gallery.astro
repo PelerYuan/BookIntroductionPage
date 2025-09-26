@@ -1,0 +1,72 @@
+---
+export interface GalleryImage { src: string; alt?: string; title?: string; caption?: string }
+export interface Props {
+  images: Array<GalleryImage | string>;
+  title?: string;
+  description?: string;
+}
+const { images, title = 'Gallery', description = 'A selection of visuals from the book' }: Props = Astro.props;
+---
+<section id="gallery" class="section bg-blue-50/25 relative overflow-hidden flex items-center">
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-100/10 via-transparent to-blue-200/5"></div>
+
+  <div class="container-narrow w-full relative z-10 flex flex-col justify-center">
+    <div class="text-center mb-8 space-dynamic-1">
+      <h2 class="text-4xl md:text-6xl font-black text-black mb-4 animate-fade-in-up">
+        {title}
+      </h2>
+      {description && (
+        <p class="text-lg text-slate-600 max-w-2xl mx-auto animate-fade-in-up" style="animation-delay: 0.2s;">
+          {description}
+        </p>
+      )}
+      <div class="w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
+    </div>
+
+    <!-- Responsive image grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      {images.map((img, index) => {
+        const item = (typeof img === 'string' ? { src: img, alt: '' } : img) as any;
+        return (
+          <figure class="relative rounded-3xl overflow-hidden border border-blue-200/50 bg-white/95 backdrop-blur-sm shadow-layer-3 hover:shadow-layer-5 transition-all duration-500 flowing-element group" onmousemove="{const r=this.getBoundingClientRect(); const x=((event.clientX-r.left)/r.width)*100; const y=((event.clientY-r.top)/r.height)*100; this.style.setProperty('--tx', x+'%'); this.style.setProperty('--ty', y+'%')}" onmouseenter="{this.classList.add('active')}" onmouseleave="{this.style.setProperty('--tx','50%'); this.style.setProperty('--ty','50%'); this.classList.remove('active')}">
+            <a href={item.src} target="_blank" rel="noopener" class="block">
+              <div class="w-full aspect-[4/3] bg-gradient-to-br from-blue-50 to-blue-100">
+                <img src={item.src} alt={item.alt || `Gallery image ${index + 1}`} loading="lazy" decoding="async" class="h-full w-full object-cover transition-transform duration-300 ease-out" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="hidden absolute inset-0 items-center justify-center">
+                  <div class="text-center text-slate-600">
+                    <div class="text-5xl mb-2">🖼️</div>
+                    <div class="font-semibold">Image unavailable</div>
+                  </div>
+                </div>
+              </div>
+              {(item.title || item.caption) && (
+                <figcaption class="absolute bottom-0 left-0 right-0 p-4 md:p-5 bg-gradient-to-t from-slate-900/60 to-transparent text-white opacity-95">
+                  {item.title && (<div class="text-sm md:text-base font-semibold leading-tight">{item.title}</div>)}
+                  {item.caption && (<div class="text-xs md:text-sm opacity-90">{item.caption}</div>)}
+                </figcaption>
+              )}
+            </a>
+          </figure>
+        );
+      })}
+    </div>
+    
+  </div>
+</section>
+
+<script>
+  // Grid version: no JS required
+</script>
+
+<style>
+  /* Grid polish */
+  /* Hover scale in-place with cursor-aware origin (card + image) */
+  figure.group { --tx: 50%; --ty: 50%; transform-origin: var(--tx) var(--ty); z-index: 0; position: relative; }
+  figure.group:hover { transform: scale(1.05) translateY(-6px); }
+  figure.group.active { z-index: 20; }
+  figure.group img { transform-origin: var(--tx) var(--ty); }
+  figure.group:hover img { transform: scale(1.1); filter: saturate(1.06); box-shadow: var(--shadow-layer-4); }
+  a:focus-visible { outline: 2px solid #3b82f6; outline-offset: 4px; border-radius: 1rem; }
+</style>
+
+

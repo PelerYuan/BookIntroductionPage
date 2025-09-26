@@ -1,0 +1,269 @@
+---
+export interface Feature {
+  title: string;
+  description: string;
+  icon: string;
+  highlight?: string;
+  image: string;
+  details?: string[];
+}
+export interface Props { features: Feature[] }
+const { features }: Props = Astro.props;
+---
+<section id="features" class="section bg-blue-50/40 relative overflow-hidden flex items-center">
+  <!-- 简洁的蓝色背景 -->
+  <div class="absolute inset-0 bg-gradient-to-br from-blue-100/15 via-transparent to-blue-200/8"></div>
+
+  <div class="container-narrow w-full relative z-10 flex flex-col justify-center">
+    <!-- 标题区域 -->
+    <div class="text-center mb-16 space-dynamic-3">
+      <h2 class="text-4xl md:text-6xl font-black text-black mb-6 animate-fade-in-up">
+        Book Features
+      </h2>
+      <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+        Explore the unique charm and core advantages of this book
+      </p>
+      <div class="w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
+    </div>
+    
+
+    
+         <!-- 主要内容区域 -->
+     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
+       
+       <!-- 左侧功能列表 -->
+       <div class="lg:col-span-2 space-y-4 relative">
+         {features.map((feature, index) => (
+           <div 
+             class="feature-item group cursor-pointer"
+             data-feature-index={index}
+           >
+             <!-- 功能卡片 -->
+             <div class="bg-white/95 backdrop-blur-sm rounded-2xl border border-blue-200/50 p-6 transition-all duration-500 hover:shadow-layer-3 hover:scale-105 relative overflow-hidden">
+               
+                              <!-- 进度条背景 -->
+                <div class="absolute top-0 left-0 h-1 bg-blue-200 rounded-t-2xl transition-all duration-1000 ease-out" 
+                     style="width: 0%"></div>
+               
+               <!-- 主要内容 -->
+               <div class="flex items-start gap-4">
+                 <!-- 图标 -->
+                 <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                   <span class="text-2xl">{feature.icon}</span>
+                 </div>
+                 
+                 <!-- 文字内容 -->
+                 <div class="flex-1 min-w-0">
+                   <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">
+                     {feature.title}
+                   </h3>
+                   
+                   <!-- 基础描述 -->
+                   <p class="text-slate-600 text-sm leading-relaxed mb-3">
+                     {feature.description}
+                   </p>
+                   
+                   
+                   
+                   <!-- 详细内容（悬停展开） -->
+                   <div class="feature-details max-h-0 overflow-hidden transition-all duration-500 ease-out">
+                     {feature.details && (
+                       <div class="space-y-2 pt-3 border-t border-blue-100">
+                         {feature.details.map(detail => (
+                           <div class="flex items-start gap-2">
+                             <div class="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
+                             <p class="text-slate-600 text-sm">{detail}</p>
+                           </div>
+                         ))}
+                       </div>
+                     )}
+                   </div>
+                 </div>
+                 
+                 <!-- 展开指示器 -->
+                 <div class="w-6 h-6 flex items-center justify-center text-blue-400 transition-transform duration-300 group-hover:rotate-90">
+                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                   </svg>
+                 </div>
+               </div>
+             </div>
+           </div>
+         ))}
+       </div>
+       
+       <!-- 右侧图片展示 -->
+       <div class="lg:col-span-3 relative flex items-center justify-center">
+         <div class="feature-image-container bg-white/95 backdrop-blur-sm rounded-3xl border border-blue-200/50 p-8 shadow-layer-3 relative overflow-hidden w-full max-w-2xl">
+           
+           <!-- 图片切换动画容器 -->
+           <div class="feature-images relative w-full transition-opacity duration-500">
+             {features.map((feature, index) => (
+               <div 
+                 class={`feature-image ${index === 0 ? 'block' : 'hidden'} transition-opacity duration-500`}
+                 data-feature-index={index}
+               >
+                 <div class="w-full bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl overflow-hidden">
+                   <img 
+                     src={feature.image} 
+                     alt={feature.title}
+                     class="w-full h-auto object-contain rounded-2xl"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                   />
+                   <!-- 图片加载失败时的备用显示 -->
+                   <div class="hidden w-full min-h-[300px] flex items-center justify-center">
+                     <div class="text-center">
+                       <div class="text-6xl mb-4">{feature.icon}</div>
+                       <h3 class="text-2xl font-bold text-slate-800 mb-2">{feature.title}</h3>
+                       <p class="text-slate-600 max-w-md">{feature.description}</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             ))}
+           </div>
+         </div>
+       </div>
+     </div>
+  </div>
+</section>
+
+<script>
+  // 功能列表交互逻辑
+  document.addEventListener('DOMContentLoaded', function() {
+    const featureItems = document.querySelectorAll('.feature-item');
+    const featureImages = document.querySelectorAll('.feature-image');
+    
+    let currentIndex = 0;
+    let autoPlayInterval;
+    let isAutoPlayStarted = false;
+    const autoPlayDuration = 4000; // 4秒
+
+    // 初始化自动播放
+    function startAutoPlay() {
+      if (isAutoPlayStarted) return; // 防止重复启动
+      
+      isAutoPlayStarted = true;
+      
+      autoPlayInterval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % featureItems.length;
+        updateActiveFeature(currentIndex);
+      }, autoPlayDuration);
+    }
+
+    // 停止自动播放
+    function stopAutoPlay() {
+      if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+      }
+      isAutoPlayStarted = false;
+    }
+
+    // 更新活动功能
+    function updateActiveFeature(index) {
+      // 更新功能列表
+      featureItems.forEach((item, i) => {
+        const card = item.querySelector('.feature-item > div');
+        const progressBar = item.querySelector('.absolute.top-0.left-0');
+        const details = item.querySelector('.feature-details');
+        
+        if (i === index) {
+          card.classList.add('ring-2', 'ring-blue-400');
+          progressBar.style.width = '100%';
+          details.style.maxHeight = details.scrollHeight + 'px';
+        } else {
+          card.classList.remove('ring-2', 'ring-blue-400');
+          progressBar.style.width = '0%';
+          details.style.maxHeight = '0px';
+        }
+      });
+
+      // 更新图片显示
+      featureImages.forEach((image, i) => {
+        if (i === index) {
+          image.classList.remove('hidden');
+          image.classList.add('block');
+        } else {
+          image.classList.remove('block');
+          image.classList.add('hidden');
+        }
+      });
+    }
+
+    // 鼠标悬停事件
+    featureItems.forEach((item, index) => {
+      item.addEventListener('mouseenter', () => {
+        stopAutoPlay();
+        currentIndex = index;
+        updateActiveFeature(index);
+      });
+
+      item.addEventListener('mouseleave', () => {
+        startAutoPlay();
+      });
+    });
+
+    // 点击事件
+    featureItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        stopAutoPlay();
+        currentIndex = index;
+        updateActiveFeature(index);
+        // 3秒后重新开始自动播放
+        setTimeout(startAutoPlay, 3000);
+      });
+    });
+
+    // 页面加载完成后立即初始化第一个功能
+    updateActiveFeature(0);
+    
+    // 监听页面滚动，当特色页面进入视口时开始自动播放
+    const featuresSection = document.getElementById('features');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !isAutoPlayStarted) {
+          // 延迟1秒开始自动播放，给用户时间阅读
+          setTimeout(() => {
+            startAutoPlay();
+          }, 1000);
+        }
+      });
+    }, {
+      threshold: 0.3 // 当30%的页面可见时触发
+    });
+    
+    if (featuresSection) {
+      observer.observe(featuresSection);
+    }
+  });
+</script>
+
+<style>
+  /* 自定义动画延迟 */
+  .animate-fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  /* 功能卡片悬停效果 */
+  .feature-item:hover .feature-details {
+    max-height: 200px !important;
+  }
+  
+  /* 进度条动画 */
+  .absolute.top-0.left-0 {
+    transition: width 1s ease-out;
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 1024px) {
+    .lg\\:grid-cols-5 {
+      grid-template-columns: 1fr;
+    }
+    .lg\\:col-span-2,
+    .lg\\:col-span-3 {
+      grid-column: span 1;
+    }
+  }
+</style>

@@ -1,0 +1,107 @@
+---
+import { navigation } from '../data/bookData.js';
+
+export interface Props {
+  currentPath?: string;
+}
+
+const { currentPath } = Astro.props;
+const currentIndex = navigation.findIndex(nav => nav.path === currentPath) || 0;
+const prevPage = currentIndex > 0 ? navigation[currentIndex - 1] : null;
+const nextPage = currentIndex < navigation.length - 1 ? navigation[currentIndex + 1] : null;
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-blue-100 shadow-sm">
+  <div class="container-narrow py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo/Title -->
+      <a href="/book/" class="text-xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
+        IT Book
+      </a>
+
+      <!-- Main Navigation -->
+      <div class="hidden md:flex items-center space-x-6">
+        {navigation.map((nav) => (
+          <a
+            href={nav.path}
+            class={`text-sm font-medium transition-colors ${
+              nav.path === currentPath
+                ? 'text-blue-600 border-b-2 border-blue-600 pb-1'
+                : 'text-slate-600 hover:text-blue-600'
+            }`}
+          >
+            {nav.title}
+          </a>
+        ))}
+      </div>
+
+      <!-- Page Counter -->
+      <div class="text-sm text-slate-500">
+        {currentIndex + 1} / {navigation.length}
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Bottom Navigation (Prev/Next) -->
+<div class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-t border-blue-100 shadow-sm">
+  <div class="container-narrow py-4">
+    <div class="flex items-center justify-between">
+      <!-- Previous Page -->
+      <div class="flex-1">
+        {prevPage ? (
+          <a
+            href={prevPage.path}
+            class="inline-flex items-center text-blue-600 hover:text-blue-700 transition-colors group"
+          >
+            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            <div class="text-left">
+              <div class="text-xs text-slate-500">Previous</div>
+              <div class="text-sm font-medium">{prevPage.title}</div>
+            </div>
+          </a>
+        ) : (
+          <div></div>
+        )}
+      </div>
+
+      <!-- Mobile Navigation Dots -->
+      <div class="flex md:hidden items-center space-x-2">
+        {navigation.map((nav, index) => (
+          <a
+            href={nav.path}
+            class={`w-2 h-2 rounded-full transition-colors ${
+              index === currentIndex ? 'bg-blue-600' : 'bg-slate-300'
+            }`}
+            title={nav.title}
+          />
+        ))}
+      </div>
+
+      <!-- Next Page -->
+      <div class="flex-1 flex justify-end">
+        {nextPage ? (
+          <a
+            href={nextPage.path}
+            class="inline-flex items-center text-blue-600 hover:text-blue-700 transition-colors group"
+          >
+            <div class="text-right">
+              <div class="text-xs text-slate-500">Next</div>
+              <div class="text-sm font-medium">{nextPage.title}</div>
+            </div>
+            <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        ) : (
+          <div></div>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Spacer to account for fixed navigation -->
+<div class="h-20"></div>

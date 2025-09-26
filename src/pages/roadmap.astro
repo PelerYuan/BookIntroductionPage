@@ -1,0 +1,11 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Roadmap from '../components/Roadmap.astro';
+import { bookData } from '../data/bookData.js';
+
+const { bookTitle, roadmap } = bookData;
+---
+
+<PageLayout title={`${bookTitle} - Roadmap`} currentPath="/book/roadmap">
+  <Roadmap items={roadmap} />
+</PageLayout>

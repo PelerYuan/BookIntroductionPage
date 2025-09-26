@@ -1,0 +1,11 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Features from '../components/Features.astro';
+import { bookData } from '../data/bookData.js';
+
+const { bookTitle, features } = bookData;
+---
+
+<PageLayout title={`${bookTitle} - Features`} currentPath="/book/features">
+  <Features features={features} />
+</PageLayout>
