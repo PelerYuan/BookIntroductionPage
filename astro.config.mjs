@@ -2,8 +2,8 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  site: 'https://page.peler.top',
-  base: '/book',
+  site: 'https://peleryuan.github.io',
+  base: '/BookIntroductionPage',
   integrations: [
     tailwind({
       config: {
