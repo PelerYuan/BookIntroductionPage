@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  site: 'https://peleryuan.github.io',
+  site: 'https://page.peler.top',
   base: '/book',
   integrations: [
     tailwind({
