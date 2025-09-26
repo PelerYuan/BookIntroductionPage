@@ -1,6 +1,6 @@
 // Shared book data for all pages
 export const bookData = {
-  coverSrc: '/book/orly-generator.png',
+  coverSrc: '/BookIntroductionPage/orly-generator.png',
   bookTitle: 'IT book for classmates',
   bookSubtitle: 'The first computer tutorial book for UNSW Foundation',
   bookDesc: 'Covering all the theoretical knowledge required for the first term, including vivid theoretical explanations, exercise questions, vocabulary summaries, and extracurricular extensions.',
@@ -30,7 +30,7 @@ export const bookData = {
       title: 'Key Knowledge Highlights',
       description: 'Use different styles to clearly highlight key points, concepts, and vocabulary.',
       icon: '⚡',
-      image: '/book/images/features/keyknowledge.png',
+      image: '/BookIntroductionPage/images/features/keyknowledge.png',
       details: [
         'Text with yellow highlighter: key points',
         'Text in bold: important concepts',
@@ -40,7 +40,7 @@ export const bookData = {
       title: 'Rich diagrams and images',
       description: 'Interesting and illustrative images help with understanding.',
       icon: '📚',
-      image: '/book/images/features/diagrams.png',
+      image: '/BookIntroductionPage/images/features/diagrams.png',
       details: [
         'Diagrams help clarify the relationships between different knowledge points',
         'Images provide readers with a direct and vivid understanding of concepts'
@@ -50,7 +50,7 @@ export const bookData = {
       title: 'Knowledge expansion paragraphs',
       description: 'Providing a more detailed and in-depth explanation of classroom knowledge.',
       icon: '🎯',
-      image: '/book/images/features/expansion.png',
+      image: '/BookIntroductionPage/images/features/expansion.png',
       details: [
         'To stimulate students\' desire for knowledge',
         'To be a good supplement to the classroom knowledge'
@@ -59,18 +59,18 @@ export const bookData = {
   ],
 
   galleryImages: [
-    { src: '/book/images/gallery/just.jpg', title: 'When just finished the first draft', caption: 'So excited! Print two copies and share with my friends!' },
-    { src: '/book/images/gallery/print.jpg', title: 'Published, and printed 100 copies', caption: 'With the great help from my friends, who printed the book for me for free!' },
-    { src: '/book/images/gallery/final.jpg', title: 'Before the theoretical exam', caption: 'A lot of students are using this book to prepare for the exam!' }
+    { src: '/BookIntroductionPage/images/gallery/just.jpg', title: 'When just finished the first draft', caption: 'So excited! Print two copies and share with my friends!' },
+    { src: '/BookIntroductionPage/images/gallery/print.jpg', title: 'Published, and printed 100 copies', caption: 'With the great help from my friends, who printed the book for me for free!' },
+    { src: '/BookIntroductionPage/images/gallery/final.jpg', title: 'Before the theoretical exam', caption: 'A lot of students are using this book to prepare for the exam!' }
   ]
 };
 
 // Navigation structure
 export const navigation = [
-  { id: 'home', title: 'Book Introduction', path: '/book/' },
-  { id: 'details', title: 'Details', path: '/book/details' },
-  { id: 'features', title: 'Features', path: '/book/features' },
-  { id: 'reviews', title: 'Reviews', path: '/book/reviews' },
-  { id: 'gallery', title: 'Gallery', path: '/book/gallery' },
-  { id: 'roadmap', title: 'Roadmap', path: '/book/roadmap' }
+  { id: 'home', title: 'Book Introduction', path: '/BookIntroductionPage/' },
+  { id: 'details', title: 'Details', path: '/BookIntroductionPage/details' },
+  { id: 'features', title: 'Features', path: '/BookIntroductionPage/features' },
+  { id: 'reviews', title: 'Reviews', path: '/BookIntroductionPage/reviews' },
+  { id: 'gallery', title: 'Gallery', path: '/BookIntroductionPage/gallery' },
+  { id: 'roadmap', title: 'Roadmap', path: '/BookIntroductionPage/roadmap' }
 ];
