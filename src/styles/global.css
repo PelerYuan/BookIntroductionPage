@@ -34,6 +34,8 @@
 }
 
 html {
+  height: 100%;
+  min-height: 100%;
   scroll-behavior: smooth;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
@@ -41,10 +43,14 @@ html {
 body {
   margin: 0;
   padding: 0;
+  min-height: 100%;
   background-color: #ffffff;
   color: #1e293b;
   line-height: 1.6;
   overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: clamp(4rem, 6vh, 5.5rem);
+  scroll-padding-bottom: clamp(3rem, 5vh, 4rem);
 }
 
 /* 容器系统 */
@@ -61,12 +67,21 @@ body {
 }
 
 .section {
-  height: 100vh;
-  padding: 2rem 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: clamp(2rem, 5vh, 4rem) 0;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+@supports (min-height: 100dvh) {
+  .section {
+    min-height: 100dvh;
+  }
 }
 
 /* 多层阴影系统 */
@@ -199,19 +214,31 @@ body {
 .space-dynamic-3 { margin: 3rem 0; }
 
 /* 响应式设计 */
+@media (max-width: 1024px) {
+  body {
+    scroll-snap-type: y proximity;
+  }
+
+  .section {
+    align-items: flex-start;
+    padding: clamp(1.5rem, 4vh, 3rem) 0;
+    overflow: visible;
+  }
+}
+
 @media (max-width: 768px) {
   .container-narrow {
     padding: 0 1rem;
   }
 
-  .section {
-    height: 100vh;
-    padding: 1rem 0;
-  }
-
   .space-dynamic-1 { margin: 1rem 0; }
   .space-dynamic-2 { margin: 1.5rem 0; }
   .space-dynamic-3 { margin: 2rem 0; }
+
+  body {
+    scroll-padding-top: 4rem;
+    scroll-padding-bottom: 3rem;
+  }
 }
 
 /* 动画系统 */
