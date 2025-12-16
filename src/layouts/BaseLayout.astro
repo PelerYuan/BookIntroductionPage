@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import NotificationBanner from '../components/NotificationBanner.astro';
+
 const { title = 'My Book', description = 'A modern, minimal book site' } = Astro.props;
 ---
 <html lang="zh-CN" class="h-full">
@@ -10,6 +12,7 @@ const { title = 'My Book', description = 'A modern, minimal book site' } = Astro
     <title>{title}</title>
   </head>
   <body class="h-full font-sans">
+    <NotificationBanner />
     <slot />
     <script src="../js/scroll-helper.js"></script>
   </body>

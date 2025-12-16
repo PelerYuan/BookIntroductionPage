@@ -8,7 +8,7 @@ export const bookData = {
   details: [
     { heading: 'Writing Motivation', content: 'As many of my Chinese classmates in the UNSW Foundation program struggle to understand computer concepts in English, I chose to write this book to help them.' },
     { heading: 'Structure & Chapters', content: 'Excluding the preface, this book contains four chapters, which correspond to all the theoretical units in the UNSW Foundation.' },
-    { heading: 'Peer-reviewed Quality', content: 'In order to ensure the accuracy and correctness, all the content in this book has been reviewed by another student who have graduated from the UNSW Foundation.' },
+    { heading: 'Peer-reviewed Quality', content: 'In order to ensure the accuracy and correctness, all the content in this book has been reviewed by another student who has graduated from the UNSW Foundation.' },
     { heading: 'Target Audience', content: 'Suitable and necessary for all students studying in the UNSW Foundation, regardless of whether they are in science, commerce, or design class.' }
   ],
 

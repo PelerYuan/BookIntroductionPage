@@ -1,0 +1,207 @@
+---
+// Notification banner component - Announce second edition
+export interface Props {
+  linkUrl?: string;
+}
+
+const { linkUrl = '#' } = Astro.props;
+---
+
+<div id="notification-banner" class="notification-banner fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white shadow-layer-3 transform transition-all duration-500 ease-in-out">
+  <div class="container-narrow">
+    <div class="flex items-center justify-between py-3 px-4">
+      <!-- Spacer for centering -->
+      <div class="flex-shrink-0 w-10"></div>
+      
+      <!-- Notification content - centered -->
+      <div class="flex items-center gap-3 flex-1 justify-center min-w-0">
+        <!-- Rocket emoji -->
+        <div class="flex-shrink-0 text-xl">🚀</div>
+        
+        <!-- Text content with link -->
+        <div class="flex items-center gap-2 flex-wrap justify-center">
+          <span class="text-sm md:text-base font-medium leading-relaxed whitespace-nowrap">
+            The second edition is now available!
+          </span>
+          <a 
+            href={linkUrl}
+            id="notification-link"
+            class="notification-link text-sm md:text-base font-medium leading-relaxed transition-all duration-300 cursor-pointer underline decoration-2 underline-offset-2 relative inline-block"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Go and have a look
+          </a>
+        </div>
+      </div>
+      
+      <!-- Close button -->
+      <button 
+        id="close-notification"
+        class="flex-shrink-0 w-10 p-1.5 rounded-lg hover:bg-white/20 transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center justify-center"
+        aria-label="Close notification"
+      >
+        <svg class="w-5 h-5 text-white group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Decorative gradient glow -->
+  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+</div>
+
+<script>
+  (function() {
+    function initNotificationBanner() {
+      const banner = document.getElementById('notification-banner');
+      const closeBtn = document.getElementById('close-notification');
+      const notificationLink = document.getElementById('notification-link');
+      
+      if (!banner || !closeBtn) {
+        // Retry if elements not ready yet
+        setTimeout(initNotificationBanner, 50);
+        return;
+      }
+      
+      // Adjust navigation position function
+      function adjustNavigationPosition(showBanner) {
+        const nav = document.querySelector('nav');
+        if (nav) {
+          if (showBanner) {
+            // Get actual banner height
+            const bannerHeight = banner.offsetHeight;
+            nav.style.top = `${bannerHeight}px`;
+            nav.style.transition = 'top 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+          } else {
+            nav.style.top = '0';
+          }
+        }
+      }
+      
+      // Ensure banner is visible initially (always show on page load)
+      banner.style.display = 'block';
+      
+      // Close button click event
+      closeBtn.addEventListener('click', function() {
+        // Add close animation
+        banner.style.transform = 'translateY(-100%)';
+        banner.style.opacity = '0';
+        
+        // Adjust navigation position
+        adjustNavigationPosition(false);
+        
+        // Hide after animation (no localStorage - will show again on refresh)
+        setTimeout(() => {
+          banner.style.display = 'none';
+        }, 500);
+      });
+      
+      // Entrance animation on page load
+      setTimeout(() => {
+        banner.style.transform = 'translateY(0)';
+        banner.style.opacity = '1';
+        // Adjust navigation position
+        adjustNavigationPosition(true);
+      }, 100);
+      
+      // Listen for window resize to readjust position
+      window.addEventListener('resize', function() {
+        if (banner.style.display !== 'none') {
+          adjustNavigationPosition(true);
+        }
+      });
+    }
+    
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initNotificationBanner);
+    } else {
+      // DOM already loaded
+      initNotificationBanner();
+    }
+  })();
+</script>
+
+<style>
+  .notification-banner {
+    /* Initial state: hidden at top */
+    transform: translateY(-100%);
+    opacity: 0;
+    display: block;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .notification-banner .container-narrow {
+      padding: 0 1rem;
+    }
+    
+    .notification-banner .flex-wrap {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .notification-banner a,
+    .notification-banner span {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+  }
+  
+  /* Smooth transition effects */
+  .notification-banner {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Link hover effects */
+  .notification-link {
+    color: #ffffff;
+    text-decoration-color: rgba(255, 255, 255, 0.6);
+    position: relative;
+  }
+  
+  .notification-link::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+  }
+  
+  .notification-link::after {
+    content: ' →';
+    opacity: 0;
+    transform: translateX(-5px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+  }
+  
+  .notification-link:hover {
+    color: #fef3c7;
+    text-shadow: 0 0 8px rgba(251, 191, 36, 0.5), 0 0 16px rgba(251, 191, 36, 0.3);
+    transform: translateY(-1px) scale(1.05);
+    text-decoration-color: #fbbf24;
+  }
+  
+  .notification-link:hover::before {
+    width: 100%;
+  }
+  
+  .notification-link:hover::after {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+  
+  .notification-link:active {
+    transform: translateY(0) scale(1.02);
+  }
+</style>
+

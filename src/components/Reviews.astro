@@ -17,9 +17,9 @@ function stars(rating?: number) {
   <!-- 简洁的蓝色背景 -->
   <div class="absolute inset-0 bg-gradient-to-br from-blue-100/10 via-transparent to-blue-200/5"></div>
 
-  <div class="container-narrow w-full relative z-10 flex flex-col justify-center">
+  <div class="container-narrow w-full relative z-10 flex flex-col justify-center py-8 md:py-12 lg:py-16">
     <!-- 标题区域 -->
-    <div class="text-center mb-24 space-dynamic-3">
+    <div class="text-center mb-8 md:mb-12 lg:mb-16 space-dynamic-3">
       <h2 class="text-4xl md:text-6xl font-black text-black mb-6 animate-fade-in-up">
         Reader Reviews
       </h2>
@@ -30,7 +30,7 @@ function stars(rating?: number) {
     </div>
     
     <!-- 评价卡片布局 -->
-    <div class="grid md:grid-cols-2 gap-16 lg:gap-20 relative">
+    <div class="grid md:grid-cols-2 gap-x-8 md:gap-x-12 lg:gap-x-16 gap-y-6 md:gap-y-8 lg:gap-y-10 relative">
       {reviews.map((rv, index) => (
         <figure 
           class={`relative flowing-element animate-fade-in-up`}
