@@ -20,83 +20,19 @@ class ScrollHelper {
     this.optimizeScrollPerformance();
   }
 
-  // 键盘导航支持
+  // 键盘导航支持 - 已禁用，允许默认键盘滚动
   addKeyboardNavigation() {
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-        e.preventDefault();
-        this.scrollToNextSection();
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        e.preventDefault();
-        this.scrollToPreviousSection();
-      } else if (e.key === 'Home') {
-        e.preventDefault();
-        this.scrollToSection(0);
-      } else if (e.key === 'End') {
-        e.preventDefault();
-        this.scrollToSection(document.querySelectorAll('.section').length - 1);
-      }
-    });
+    // 键盘滚动限制已移除，允许使用默认的键盘滚动行为
   }
 
-  // 触摸手势支持
+  // 触摸手势支持 - 已禁用，允许自由触摸滚动
   addTouchSupport() {
-    let startY = 0;
-    let startTime = 0;
-
-    document.addEventListener('touchstart', (e) => {
-      startY = e.touches[0].clientY;
-      startTime = Date.now();
-    });
-
-    document.addEventListener('touchend', (e) => {
-      const endY = e.changedTouches[0].clientY;
-      const endTime = Date.now();
-      const deltaY = startY - endY;
-      const deltaTime = endTime - startTime;
-
-      // 快速滑动检测
-      if (deltaTime < 300 && Math.abs(deltaY) > 50) {
-        if (deltaY > 0) {
-          this.scrollToNextSection();
-        } else {
-          this.scrollToPreviousSection();
-        }
-      }
-    });
+    // 触摸滚动限制已移除，允许正常的触摸滚动行为
   }
 
-  // 添加鼠标滚轮优化
+  // 添加鼠标滚轮优化 - 已禁用，允许自由滚动
   addWheelOptimization() {
-    let isScrolling = false;
-    let scrollTimeout;
-
-    document.addEventListener('wheel', (e) => {
-      if (isScrolling) {
-        e.preventDefault();
-        return;
-      }
-
-      // 检测滚动方向
-      const delta = e.deltaY;
-      const threshold = 50; // 滚动阈值
-
-      if (Math.abs(delta) > threshold) {
-        isScrolling = true;
-        
-        if (delta > 0) {
-          this.scrollToNextSection();
-        } else {
-          this.scrollToPreviousSection();
-        }
-
-        // 防止快速连续滚动
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          isScrolling = false;
-        }, 800);
-      }
-    }, { passive: false });
+    // 滚动限制已移除，允许正常的页面滚动
   }
 
   // 滚动到下一个部分
