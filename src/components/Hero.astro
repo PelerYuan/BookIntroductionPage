@@ -6,138 +6,442 @@ export interface Props {
   description?: string;
 }
 const { coverSrc, title, subtitle, description }: Props = Astro.props;
+
+const editions = [
+  {
+    coverSrc: '/BookIntroductionPage/images/covers/cover1.png',
+    pdfUrl:   '/BookIntroductionPage/pdfs/写给同学的IT书_电子版.pdf',
+    badge:    { label: 'V1', class: 'bg-blue-500' },
+    dotColor: '#3b82f6',
+    hintText: 'Scroll down to see more editions',
+    hintDotClass: 'bg-blue-400',
+    glowClass: 'bg-blue-200/20',
+  },
+  {
+    coverSrc: '/BookIntroductionPage/images/covers/cover2.png',
+    pdfUrl:   '/BookIntroductionPage/pdfs/v2.pdf',
+    badge:    { label: 'V2', class: 'bg-orange-500' },
+    dotColor: '#f97316',
+    hintText: 'Scroll down for the latest edition',
+    hintDotClass: 'bg-orange-400',
+    glowClass: 'bg-orange-200/20',
+  },
+  {
+    coverSrc: '/BookIntroductionPage/images/covers/cover3.png',
+    pdfUrl:   '/BookIntroductionPage/pdfs/v3.pdf',
+    badge:    { label: 'V3', class: 'bg-purple-600' },
+    dotColor: '#9333ea',
+    hintText: 'Scroll down to explore the site',
+    hintDotClass: 'bg-purple-400',
+    glowClass: 'bg-purple-200/20',
+  },
+];
 ---
+
 <section id="hero" class="section bg-gradient-to-br from-blue-50 via-slate-50 to-blue-50/30 relative overflow-hidden flex items-center">
-  <!-- 简洁的蓝色背景 -->
+  <!-- Static background decoration -->
   <div class="absolute inset-0 bg-gradient-to-br from-blue-100/20 via-transparent to-blue-200/10"></div>
 
   <div class="container-narrow relative z-10 w-full flex flex-col justify-center">
-    <!-- 使用黄金比例和有机布局 -->
     <div class="grid grid-cols-1 lg:grid-cols-phi gap-16 items-center">
-      <!-- 书籍封面区域 - 简洁设计 -->
+
+      <!-- ── Book cover (only the image swaps, with crossfade) ── -->
       <div class="book-cover-container group transform -rotate-2 hover:rotate-0 transition-all duration-700 flowing-element">
-        <!-- 多层阴影系统创造深度 -->
         <div class="relative">
-          <!-- 背景装饰层 -->
-          <div class="absolute -inset-4 bg-blue-200/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-700"></div>
-          
-          <!-- 主要封面容器 -->
-          <div class="aspect-[3/4] w-full overflow-hidden rounded-3xl shadow-layer-5 bg-slate-200 transform transition-all duration-700 hover:scale-105 hover:shadow-layer-5 relative organic-card">
-            <img 
-              src={coverSrc} 
-              alt={title} 
-              class="h-full w-full object-cover transform transition-transform duration-700 group-hover:scale-110" 
-            />
-            
-            <!-- 封面边缘光晕 -->
-            <div class="absolute inset-0 rounded-3xl ring-1 ring-white/20 group-hover:ring-2 group-hover:ring-white/30 transition-all duration-500"></div>
+          <!-- Glow layer — crossfades colour between editions -->
+          <div id="cover-glow" class="absolute -inset-4 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-700 bg-blue-200/20"></div>
+
+          <!-- Cover image wrapper — fixed height, no forced aspect ratio -->
+          <div class="cover-frame w-full overflow-hidden rounded-3xl shadow-layer-5 bg-slate-200 relative organic-card">
+            <!-- Three cover images stacked; only the active one is visible -->
+            {editions.map((ed, i) => (
+              <img
+                src={ed.coverSrc}
+                alt={i === 0 ? title : `${title} ${ed.badge?.label}`}
+                class={`cover-img w-full h-full object-contain block transition-opacity duration-500 ${i === 0 ? 'cover-img--active' : 'cover-img--hidden'}`}
+                data-edition={i}
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            ))}
+            <div class="absolute inset-0 rounded-3xl ring-1 ring-white/20 group-hover:ring-2 group-hover:ring-white/30 transition-all duration-500 pointer-events-none"></div>
           </div>
         </div>
       </div>
 
-      <!-- 文字内容区域 - 简洁设计 -->
+      <!-- ── Text content (static — never moves) ── -->
       <div class="flex flex-col space-y-10 lg:pl-8 relative">
         <div class="text-content space-dynamic-2">
+
+          <!-- Title with edition badge -->
           <h1 class="hero-title text-5xl lg:text-7xl font-black tracking-tight text-black leading-tight animate-fade-in-up">
             {title}
+            <!-- Badge: V1 by default, animates to V2/V3 on scroll -->
+            <span
+              id="edition-badge"
+              class="edition-badge badge-entering ml-3 inline-block align-middle text-white text-2xl lg:text-3xl font-bold px-4 py-1 rounded-xl shadow-layer-3 bg-blue-500"
+              aria-hidden="false"
+            >V1</span>
           </h1>
-          
+
           {subtitle && (
             <p class="hero-subtitle mt-8 text-xl lg:text-2xl text-slate-600 font-medium animate-slide-in-left" style="animation-delay: 0.2s;">
               {subtitle}
             </p>
           )}
-          
           {description && (
             <p class="hero-description mt-10 text-lg lg:text-xl leading-relaxed text-slate-600 max-w-lg animate-slide-in-left" style="animation-delay: 0.4s;">
               {description}
             </p>
           )}
         </div>
-        
-        <!-- 按钮系统 -->
+
+        <!-- Buttons -->
         <div class="hero-buttons flex flex-col sm:flex-row gap-6 pt-4 animate-fade-in-up" style="animation-delay: 0.6s;">
           <a href="#details" class="btn-primary group text-lg px-8 py-5 shadow-layer-3 hover:shadow-layer-5 bg-blue-600 hover:bg-blue-700 text-white flowing-element whitespace-nowrap">
             <span class="relative z-10">Learn More</span>
             <span class="ml-3 transform transition-transform group-hover:translate-x-2 relative z-10">→</span>
           </a>
-          
           <a href="#reviews" class="btn-outline group text-lg px-8 py-5 shadow-layer-2 hover:shadow-layer-4 border-2 border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400 flowing-element whitespace-nowrap">
             <span>View Reviews</span>
             <span class="ml-3 transform transition-transform group-hover:translate-x-2">→</span>
           </a>
-          
-          <button 
+          <!-- Read Online: data-pdf updated by JS on edition change -->
+          <button
             id="readOnlineBtn"
             class="btn-primary group text-lg px-8 py-5 shadow-layer-3 hover:shadow-layer-5 bg-green-600 hover:bg-green-700 text-white flowing-element whitespace-nowrap"
+            data-pdf={editions[0].pdfUrl}
           >
             <span class="relative z-10">Read Online</span>
             <span class="ml-3 transform transition-transform group-hover:translate-x-2 relative z-10">📖</span>
           </button>
         </div>
-        
-        <!-- 简洁的视觉引导 -->
+
+        <!-- Scroll hint — dot colour and text change per edition -->
         <div class="flex items-center space-x-4 pt-8 animate-fade-in-up" style="animation-delay: 0.8s;">
-          <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-          <span class="text-sm text-slate-500 font-medium">Scroll down to explore more</span>
+          <div id="hint-dot" class="w-2 h-2 rounded-full animate-pulse bg-blue-400 transition-colors duration-500"></div>
+          <span id="hint-text" class="text-sm text-slate-500 font-medium transition-opacity duration-300">Scroll down to see more editions</span>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Edition progress pips (bottom-centre) -->
+  <div id="edition-pips" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20" aria-hidden="true">
+    <div class="edition-pip edition-pip--active" data-pip="0"></div>
+    <div class="edition-pip" data-pip="1"></div>
+    <div class="edition-pip" data-pip="2"></div>
+  </div>
+
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const readOnlineBtn = document.getElementById('readOnlineBtn');
-    
-    if (readOnlineBtn) {
-      readOnlineBtn.addEventListener('click', function() {
-        // 直接在新标签页打开PDF文件
-        const pdfUrl = '/BookIntroductionPage/pdfs/写给同学的IT书_电子版.pdf';
-        
-        // 在新标签页中打开PDF
-        const newTab = window.open(pdfUrl, '_blank');
-        
-        // 如果新标签页被阻止，显示提示
-        if (!newTab) {
-          alert('Please allow pop-ups for this site to open the PDF in new tab.');
-        }
-      });
+(function heroEditionSwitcher() {
+  // ── Config ──────────────────────────────────────────────────────────────────
+  const EDITION_COUNT   = 3;
+  const WHEEL_THRESHOLD = 30;
+  const SWIPE_THRESHOLD = 50;
+
+  // Per-edition data (mirrors the Astro frontmatter arrays)
+  const EDITIONS = [
+    {
+      pdfUrl:       '/BookIntroductionPage/pdfs/写给同学的IT书_电子版.pdf',
+      badge:        { label: 'V1', bgClass: 'bg-blue-500' },
+      dotColor:     '#3b82f6',
+      hintText:     'Scroll down to see more editions',
+      hintDotClass: 'bg-blue-400',
+      glowClass:    'bg-blue-200/20',
+    },
+    {
+      pdfUrl:       '/BookIntroductionPage/pdfs/v2.pdf',
+      badge:        { label: 'V2', bgClass: 'bg-orange-500' },
+      dotColor:     '#f97316',
+      hintText:     'Scroll down for the latest edition',
+      hintDotClass: 'bg-orange-400',
+      glowClass:    'bg-orange-200/20',
+    },
+    {
+      pdfUrl:       '/BookIntroductionPage/pdfs/v3.pdf',
+      badge:        { label: 'V3', bgClass: 'bg-purple-600' },
+      dotColor:     '#9333ea',
+      hintText:     'Scroll down to explore the site',
+      hintDotClass: 'bg-purple-400',
+      glowClass:    'bg-purple-200/20',
+    },
+  ];
+
+  // ── State ───────────────────────────────────────────────────────────────────
+  let currentEdition = 0;
+  let isAnimating    = false;
+  let touchStartY    = 0;
+
+  // ── DOM refs ─────────────────────────────────────────────────────────────────
+  const heroSection  = document.getElementById('hero');
+  const coverImgs    = Array.from(document.querySelectorAll('.cover-img'));
+  const coverGlow    = document.getElementById('cover-glow');
+  const badge        = document.getElementById('edition-badge');
+  const hintDot      = document.getElementById('hint-dot');
+  const hintText     = document.getElementById('hint-text');
+  const readBtn      = document.getElementById('readOnlineBtn');
+  const pips         = Array.from(document.querySelectorAll('#edition-pips .edition-pip'));
+
+  if (!heroSection) return;
+
+  // Tailwind dot colour classes used on the hint dot
+  const ALL_DOT_CLASSES = ['bg-blue-400', 'bg-orange-400', 'bg-purple-400'];
+
+  // ── Helper ───────────────────────────────────────────────────────────────────
+  function isHeroAtTop() {
+    const rect = heroSection.getBoundingClientRect();
+    return rect.top > -4 && rect.top < 4;
+  }
+
+  // ── Pip update ───────────────────────────────────────────────────────────────
+  function updatePips(idx) {
+    pips.forEach((pip, i) => {
+      pip.classList.toggle('edition-pip--active', i === idx);
+      pip.style.backgroundColor = i === idx ? EDITIONS[idx].dotColor : '';
+    });
+  }
+
+  // ── Apply edition state to the DOM ───────────────────────────────────────────
+  function applyEdition(idx) {
+    const ed = EDITIONS[idx];
+
+    // 1. Crossfade cover image
+    coverImgs.forEach((img, i) => {
+      img.classList.toggle('cover-img--active', i === idx);
+      img.classList.toggle('cover-img--hidden', i !== idx);
+    });
+
+    // 2. Swap glow colour
+    if (coverGlow) {
+      // Remove all possible glow classes then add the right one
+      coverGlow.classList.remove('bg-blue-200/20', 'bg-orange-200/20', 'bg-purple-200/20');
+      coverGlow.classList.add(ed.glowClass);
+    }
+
+    // 3. Badge: reset hidden state → update content/colour → pop in
+    if (badge) {
+      badge.classList.remove('badge-entering');
+      badge.textContent = ed.badge.label;
+      badge.className = `edition-badge ml-3 inline-block align-middle text-white text-2xl lg:text-3xl font-bold px-4 py-1 rounded-xl shadow-layer-3 ${ed.badge.bgClass}`;
+      badge.setAttribute('aria-hidden', 'false');
+      // Force reflow so browser sees the hidden state, then trigger pop-in
+      void badge.offsetWidth;
+      badge.classList.add('badge-entering');
+    }
+
+    // 4. Hint dot colour
+    if (hintDot) {
+      hintDot.classList.remove(...ALL_DOT_CLASSES);
+      hintDot.classList.add(ed.hintDotClass);
+    }
+
+    // 5. Hint text (brief fade)
+    if (hintText) {
+      hintText.style.opacity = '0';
+      setTimeout(() => {
+        hintText.textContent = ed.hintText;
+        hintText.style.opacity = '1';
+      }, 200);
+    }
+
+    // 6. Read Online button PDF target
+    if (readBtn) {
+      readBtn.dataset.pdf = ed.pdfUrl;
+    }
+
+    // 7. Pips
+    updatePips(idx);
+  }
+
+  // Init
+  updatePips(0);
+
+  // ── Transition ───────────────────────────────────────────────────────────────
+  function transitionTo(nextEdition) {
+    if (isAnimating) return false;
+    if (nextEdition < 0 || nextEdition >= EDITION_COUNT) return false;
+    if (nextEdition === currentEdition) return false;
+
+    isAnimating = true;
+    applyEdition(nextEdition);
+
+    setTimeout(() => {
+      currentEdition = nextEdition;
+      isAnimating = false;
+    }, 500); // wait for crossfade to finish
+
+    return true;
+  }
+
+  // ── Wheel ────────────────────────────────────────────────────────────────────
+  window.addEventListener('wheel', function (e) {
+    if (!isHeroAtTop()) return;
+
+    const goingDown = e.deltaY > WHEEL_THRESHOLD;
+    const goingUp   = e.deltaY < -WHEEL_THRESHOLD;
+
+    if (goingDown && currentEdition < EDITION_COUNT - 1) {
+      e.preventDefault();
+      transitionTo(currentEdition + 1);
+    } else if (goingUp && currentEdition > 0) {
+      e.preventDefault();
+      transitionTo(currentEdition - 1);
+    }
+  }, { passive: false });
+
+  // ── Touch ────────────────────────────────────────────────────────────────────
+  window.addEventListener('touchstart', function (e) {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchend', function (e) {
+    if (!isHeroAtTop()) return;
+    const delta = touchStartY - e.changedTouches[0].clientY;
+    if (delta > SWIPE_THRESHOLD && currentEdition < EDITION_COUNT - 1) {
+      transitionTo(currentEdition + 1);
+    } else if (delta < -SWIPE_THRESHOLD && currentEdition > 0) {
+      transitionTo(currentEdition - 1);
+    }
+  }, { passive: true });
+
+  // ── Keyboard ─────────────────────────────────────────────────────────────────
+  window.addEventListener('keydown', function (e) {
+    if (!isHeroAtTop()) return;
+    const goDown = e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ';
+    const goUp   = e.key === 'ArrowUp'   || e.key === 'PageUp';
+    if (goDown && currentEdition < EDITION_COUNT - 1) {
+      e.preventDefault();
+      transitionTo(currentEdition + 1);
+    } else if (goUp && currentEdition > 0) {
+      e.preventDefault();
+      transitionTo(currentEdition - 1);
     }
   });
+
+  // ── Read Online button ───────────────────────────────────────────────────────
+  if (readBtn) {
+    readBtn.addEventListener('click', function () {
+      const pdfUrl = readBtn.dataset.pdf;
+      if (!pdfUrl) return;
+      const tab = window.open(pdfUrl, '_blank');
+      if (!tab) alert('Please allow pop-ups for this site to open the PDF in a new tab.');
+    });
+  }
+})();
 </script>
 
 <style>
-  /* 书籍封面容器样式 */
+  /* ── Cover frame: fixed height, contains images without cropping ─── */
+  .cover-frame {
+    /* Use a tall-ish fixed height so all covers display fully */
+    height: clamp(320px, 55vh, 560px);
+    position: relative;
+  }
+
+  /* All cover images stacked at the same position */
+  .cover-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;   /* show full image, no cropping */
+    object-position: center;
+    transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .cover-img--active {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .cover-img--hidden {
+    opacity: 0;
+    z-index: 1;
+  }
+
+  /* ── Edition badge ──────────────────────────────────────────────────── */
+  .edition-badge {
+    vertical-align: middle;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    transition: opacity 300ms ease, transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Default hidden state */
+    opacity: 0;
+    transform: scale(0.75);
+  }
+
+  /* JS adds this class to trigger the pop-in */
+  .edition-badge.badge-entering {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* JS adds this class to trigger the pop-out */
+  .edition-badge.badge-leaving {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+
+  /* ── Edition pip dots ────────────────────────────────────────────────── */
+  .edition-pip {
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background-color: #cbd5e1;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .edition-pip--active {
+    transform: scale(1.5);
+  }
+
+  /* ── Hint text fade transition ──────────────────────────────────────── */
+  #hint-text {
+    transition: opacity 200ms ease;
+  }
+
+  /* ── Book cover container ───────────────────────────────────────────── */
   .book-cover-container {
     position: relative;
     perspective: 1200px;
   }
-  
-  /* 自定义动画延迟 */
+
+  /* ── V1 entrance animations ─────────────────────────────────────────── */
   .animate-fade-in-up {
     opacity: 0;
     animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
-  
+
   .animate-slide-in-left {
     opacity: 0;
     animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
-  
-  /* 响应式调整 */
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0);    }
+  }
+
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0);     }
+  }
+
+  /* ── Responsive ──────────────────────────────────────────────────────── */
   @media (max-width: 1024px) {
     .book-cover-container {
       transform: none !important;
     }
   }
-  
-  /* 增强的悬停效果 */
-  .book-cover-container:hover .organic-card::before {
-    transform: rotate(45deg) scale(1.3);
+
+  /* ── Reduced motion ──────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .cover-img,
+    .edition-badge,
+    #hint-text {
+      transition: none;
+    }
   }
 </style>
-
-
-
-
