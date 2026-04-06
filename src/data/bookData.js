@@ -20,9 +20,9 @@ export const bookData = {
   ],
 
   roadmap: [
-    { title: 'Correct spelling mistakes', description: 'Correct the spelling mistakes that have already been found in this book.', quarter: 'Task 1' },
-    { title: 'Ensure the content is updated', description: 'Update the content to better align with the new version of the UNSW Foundation textbook.', quarter: 'Task 2' },
-    { title: 'Layout Optimization', description: 'Revise the layout based on the feedback to enhance readability and mobile experience', quarter: 'Task 3' }
+    { title: 'Continuing the Legacy', description: "Widely appreciated by students, reprinted with Alicia's support.", quarter: 'Third Edition' },
+    { title: 'Pursuit of Excellence', description: 'Refined through feedback. Built for the long term.', quarter: 'Second Edition' },
+    { title: 'From the Ground Up', description: 'Made possible with the support of many.', quarter: 'First Edition' }
   ],
 
   features: [
