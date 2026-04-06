@@ -119,7 +119,7 @@ const editions = [
         <!-- Scroll hint — dot colour and text change per edition -->
         <div class="flex items-center space-x-4 pt-8 animate-fade-in-up" style="animation-delay: 0.8s;">
           <div id="hint-dot" class="w-2 h-2 rounded-full animate-pulse bg-blue-400 transition-colors duration-500"></div>
-          <span id="hint-text" class="text-sm text-slate-500 font-medium transition-opacity duration-300">Scroll down to see more editions</span>
+          <span class="text-sm text-slate-500 font-medium">Scroll down to see more editions</span>
         </div>
       </div>
     </div>
@@ -180,7 +180,6 @@ const editions = [
   const coverGlow    = document.getElementById('cover-glow');
   const badge        = document.getElementById('edition-badge');
   const hintDot      = document.getElementById('hint-dot');
-  const hintText     = document.getElementById('hint-text');
   const readBtn      = document.getElementById('readOnlineBtn');
   const pips         = Array.from(document.querySelectorAll('#edition-pips .edition-pip'));
 
@@ -237,14 +236,7 @@ const editions = [
       hintDot.classList.add(ed.hintDotClass);
     }
 
-    // 5. Hint text (brief fade)
-    if (hintText) {
-      hintText.style.opacity = '0';
-      setTimeout(() => {
-        hintText.textContent = ed.hintText;
-        hintText.style.opacity = '1';
-      }, 200);
-    }
+    // 5. (hint text is static — no change needed)
 
     // 6. Read Online button PDF target
     if (readBtn) {
