@@ -10,7 +10,7 @@ export interface Feature {
 export interface Props { features: Feature[] }
 const { features }: Props = Astro.props;
 ---
-<section id="features" class="section bg-blue-50/40 relative overflow-hidden flex items-center">
+<section id="features" class="section bg-blue-50/40 relative overflow-hidden">
   <!-- 简洁的蓝色背景 -->
   <div class="absolute inset-0 bg-gradient-to-br from-blue-100/15 via-transparent to-blue-200/8"></div>
 
@@ -29,7 +29,7 @@ const { features }: Props = Astro.props;
 
     
          <!-- 主要内容区域 -->
-     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
+     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
        
        <!-- 左侧功能列表 -->
        <div class="lg:col-span-2 space-y-4 relative">
@@ -256,6 +256,13 @@ const { features }: Props = Astro.props;
     transition: width 1s ease-out;
   }
   
+  /* 固定 features section 顶部对齐，防止卡片展开时标题抖动 */
+  #features {
+    align-items: flex-start;
+    padding-top: clamp(3rem, 8vh, 6rem);
+    padding-bottom: clamp(3rem, 8vh, 6rem);
+  }
+
   /* 响应式调整 */
   @media (max-width: 1024px) {
     .lg\\:grid-cols-5 {
