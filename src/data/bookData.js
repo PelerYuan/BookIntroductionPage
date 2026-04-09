@@ -61,7 +61,10 @@ export const bookData = {
   galleryImages: [
     { src: '/BookIntroductionPage/images/gallery/just.jpg', title: 'When just finished the first draft', caption: 'So excited! Print two copies and share with my friends!' },
     { src: '/BookIntroductionPage/images/gallery/print.jpg', title: 'Published, and printed 100 copies', caption: 'With the great help from my friends, who printed the book for me for free!' },
-    { src: '/BookIntroductionPage/images/gallery/final.jpg', title: 'Before the theoretical exam', caption: 'A lot of students are using this book to prepare for the exam!' }
+    { src: '/BookIntroductionPage/images/gallery/final.jpg', title: 'Before the theoretical exam', caption: 'A lot of students are using this book to prepare for the exam!' },
+    { src: '/BookIntroductionPage/images/gallery/bird.jpg', title: 'Working alongside a parrot', caption: 'Great coffee and a charming parrot at the café sparked the inspiration behind this book.' },
+    { src: '/BookIntroductionPage/images/gallery/second.jpg', title: 'Second Edition — Delivered!', caption: 'Arrived at the IT Lab just 30 minutes before my graduation ceremony.' },
+    { src: '/BookIntroductionPage/images/gallery/third.jpg', title: 'Third Edition — Reprinted!', caption: 'Loved by the next cohort of students, continuing its journey forward.' }
   ]
 };
 
