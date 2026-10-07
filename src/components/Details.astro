@@ -4,41 +4,39 @@ export interface Props {
 }
 const { sections }: Props = Astro.props;
 ---
-<section id="details" class="section bg-blue-50/30 relative overflow-hidden flex items-center">
-  <!-- 简洁的蓝色背景 -->
-  <div class="absolute inset-0 bg-gradient-to-br from-blue-100/10 via-transparent to-blue-200/5"></div>
+<section id="details" class="section relative overflow-hidden flex items-center">
 
-  <div class="container-narrow w-full relative z-10 flex flex-col justify-center py-8 md:py-12 lg:py-16">
+  <div class="container-narrow w-full relative z-10 flex flex-col justify-center">
     <!-- 标题区域 -->
-    <div class="text-center mb-8 md:mb-12 lg:mb-16 space-dynamic-3">
-      <h2 class="text-4xl md:text-6xl font-black text-black mb-6 animate-fade-in-up">
+    <div class="text-center mb-6 md:mb-10 lg:mb-12">
+      <h2 class="text-3xl md:text-6xl font-black text-black mb-3 md:mb-4 animate-fade-in-up">
         Detailed Introduction
       </h2>
-      <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+      <p class="text-base md:text-lg text-slate-600 max-w-2xl mx-auto mb-5 md:mb-6 animate-fade-in-up" style="animation-delay: 0.2s;">
         Deep dive into the core value and unique features of this book
       </p>
-      <div class="w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
+      <div class="w-20 md:w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
     </div>
-    
-    <!-- 卡片布局 -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 md:gap-x-12 lg:gap-x-16 gap-y-4 md:gap-y-6 lg:gap-y-8 relative">
+
+    <!-- 卡片布局：移动端为平直的紧凑列表，桌面端保留倾斜的有机布局 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 md:gap-x-12 lg:gap-x-16 gap-y-3 md:gap-y-6 lg:gap-y-8 relative">
       {sections.map((s, index) => (
-        <article 
+        <article
           class={`relative flowing-element animate-fade-in-up`}
           style={`animation-delay: ${0.6 + index * 0.2}s`}
         >
           <!-- 卡片容器 -->
-          <div class={`px-6 md:px-8 lg:px-10 pt-6 md:pt-8 lg:pt-10 pb-4 md:pb-5 lg:pb-6 rounded-3xl border border-blue-200/50 bg-white/95 backdrop-blur-sm transition-all duration-700 hover:scale-105 hover:-translate-y-3 relative organic-card ${
-            index === 0 ? 'shadow-layer-4 transform -rotate-2 lg:translate-x-4' :
-            index === 1 ? 'shadow-layer-3 transform rotate-1 lg:-translate-x-2' :
-            index === 2 ? 'shadow-layer-4 transform -rotate-1 lg:translate-x-6' :
-            'shadow-layer-3 transform rotate-2 lg:-translate-x-4'
+          <div class={`px-5 md:px-8 lg:px-10 pt-5 md:pt-8 lg:pt-10 pb-4 md:pb-5 lg:pb-6 rounded-2xl lg:rounded-3xl border border-blue-200/50 surface transition-all duration-700 lg:hover:scale-105 lg:hover:-translate-y-3 relative organic-card ${
+            index === 0 ? 'shadow-layer-2 lg:shadow-layer-4 lg:-rotate-2 lg:translate-x-4' :
+            index === 1 ? 'shadow-layer-2 lg:shadow-layer-3 lg:rotate-1 lg:-translate-x-2' :
+            index === 2 ? 'shadow-layer-2 lg:shadow-layer-4 lg:-rotate-1 lg:translate-x-6' :
+            'shadow-layer-2 lg:shadow-layer-3 lg:rotate-2 lg:-translate-x-4'
           }`}>
-            
+
             <!-- 标题和图标区域 -->
-            <div class="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
-              <span 
-                class="text-3xl md:text-4xl lg:text-5xl flex-shrink-0"
+            <div class="flex items-center gap-3 md:gap-4 mb-2 md:mb-6">
+              <span
+                class="text-2xl md:text-4xl lg:text-5xl flex-shrink-0"
                 role="img"
                 aria-label={
                   index === 0 ? 'Writing Motivation - Target icon' :
@@ -49,12 +47,12 @@ const { sections }: Props = Astro.props;
               >
                 {index === 0 ? '🎯' : index === 1 ? '📚' : index === 2 ? '💡' : '👥'}
               </span>
-              <h3 class="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">{s.heading}</h3>
+              <h3 class="text-lg md:text-3xl font-bold text-slate-800 leading-tight">{s.heading}</h3>
             </div>
-            <p class="text-slate-600 leading-relaxed text-base md:text-lg mb-0">{s.content}</p>
-            
+            <p class="text-slate-600 leading-relaxed text-[15px] md:text-lg mb-0">{s.content}</p>
+
             <!-- 悬停装饰线条 -->
-            <div class="mt-2 md:mt-3 h-1.5 bg-blue-500 opacity-0 hover:opacity-100 transition-all duration-700 transform scale-x-0 hover:scale-x-100 origin-left rounded-full"></div>
+            <div class="hidden lg:block mt-2 md:mt-3 h-1.5 bg-blue-500 opacity-0 hover:opacity-100 transition-all duration-700 transform scale-x-0 hover:scale-x-100 origin-left rounded-full"></div>
           </div>
         </article>
       ))}
@@ -71,16 +69,6 @@ const { sections }: Props = Astro.props;
     animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
-  /* 响应式调整 */
-  @media (max-width: 1024px) {
-    .lg\\:translate-x-4,
-    .lg\\:-translate-x-2,
-    .lg\\:translate-x-6,
-    .lg\\:-translate-x-4 {
-      transform: none !important;
-    }
-  }
-  
   /* 增强的悬停效果 */
   .organic-card:hover::before {
     transform: rotate(45deg) scale(1.4);
@@ -88,7 +76,7 @@ const { sections }: Props = Astro.props;
   
   /* 卡片悬停时的光效增强 */
   .organic-card:hover {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 28px 52px -14px rgb(var(--theme-700) / 0.32), 0 0 0 1px rgb(var(--theme-400) / 0.3);
   }
 </style>
 

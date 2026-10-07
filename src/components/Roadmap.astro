@@ -3,49 +3,47 @@ export interface RoadmapItem { title: string; description?: string; quarter?: st
 export interface Props { items: RoadmapItem[] }
 const { items }: Props = Astro.props;
 ---
-<section id="roadmap" class="section bg-blue-50/30 relative overflow-hidden flex items-center">
-  <!-- 简洁的蓝色背景 -->
-  <div class="absolute inset-0 bg-gradient-to-br from-blue-100/10 via-transparent to-blue-200/5"></div>
+<section id="roadmap" class="section relative overflow-hidden flex items-center">
 
   <div class="container-narrow w-full relative z-10 flex flex-col justify-center">
     <!-- 标题区域 -->
-    <div class="text-center mb-12 md:mb-16 space-dynamic-3">
-      <h2 class="text-3xl md:text-5xl font-black text-black mb-4 md:mb-5 animate-fade-in-up">
+    <div class="text-center mb-8 md:mb-10 lg:mb-12">
+      <h2 class="text-3xl md:text-5xl font-black text-black mb-3 md:mb-5 animate-fade-in-up">
         Third Edition Released
       </h2>
-      <p class="text-base md:text-lg text-slate-600 max-w-2xl mx-auto mb-6 animate-fade-in-up" style="animation-delay: 0.2s;">
+      <p class="text-base md:text-lg text-slate-600 max-w-2xl mx-auto mb-5 md:mb-6 animate-fade-in-up" style="animation-delay: 0.2s;">
         A journey through three editions — from the ground up to a celebrated resource for students.
       </p>
-      <div class="w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
+      <div class="w-20 md:w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
     </div>
-    
+
     <!-- 时间线布局 -->
     <div class="relative">
       <!-- 有机时间线系统 -->
       <div class="relative">
         <!-- 时间线连接线 -->
-        <div class="absolute left-6 md:left-8 top-0 bottom-0 w-0.5 md:w-1 bg-blue-200 rounded-full shadow-layer-1"></div>
-        
+        <div class="absolute left-[11px] md:left-[34px] top-0 bottom-0 w-0.5 md:w-1 bg-blue-200 rounded-full shadow-layer-1"></div>
+
         <!-- 时间线项目 -->
-        <ol class="space-y-8 md:space-y-10 relative">
+        <ol class="space-y-5 md:space-y-10 relative">
           {items.map((it, index) => (
             <li class="relative group animate-fade-in-up" style={`animation-delay: ${0.6 + index * 0.3}s`}>
               <!-- 状态指示器 -->
-              <div class="absolute left-4 md:left-6 top-2 md:top-3 w-4 h-4 md:w-6 md:h-6 rounded-full bg-blue-500 shadow-layer-3 transform scale-100 group-hover:scale-125 transition-transform duration-500 ring-2 md:ring-4 ring-white"></div>
-              
-              <!-- 卡片内容 -->
-              <div 
-                class={`ml-16 md:ml-20 p-6 md:p-8 rounded-2xl md:rounded-3xl border border-blue-200/50 bg-white/95 backdrop-blur-sm transition-all duration-700 hover:scale-105 hover:-translate-y-3 relative organic-card ${
-                  index === 0 ? 'shadow-layer-4 transform -rotate-2 lg:translate-x-4' :
-                  index === 1 ? 'shadow-layer-3 transform rotate-1 lg:-translate-x-2' :
-                  'shadow-layer-4 transform -rotate-1 lg:translate-x-6'
+              <div class="absolute left-1 md:left-6 top-6 md:top-3 w-4 h-4 md:w-6 md:h-6 rounded-full bg-blue-500 shadow-layer-3 transform scale-100 group-hover:scale-125 transition-transform duration-500 ring-2 md:ring-4 ring-white"></div>
+
+              <!-- 卡片内容：移动端平直紧凑，桌面端保留倾斜的有机布局 -->
+              <div
+                class={`ml-9 md:ml-20 p-5 md:p-8 rounded-2xl md:rounded-3xl border border-blue-200/50 surface transition-all duration-700 lg:hover:scale-105 lg:hover:-translate-y-3 relative organic-card ${
+                  index === 0 ? 'shadow-layer-2 lg:shadow-layer-4 lg:-rotate-2 lg:translate-x-4' :
+                  index === 1 ? 'shadow-layer-2 lg:shadow-layer-3 lg:rotate-1 lg:-translate-x-2' :
+                  'shadow-layer-2 lg:shadow-layer-4 lg:-rotate-1 lg:translate-x-6'
                 }`}>
-                
+
                 <!-- 头部信息区域 -->
-                <div class="flex items-start justify-between mb-4 md:mb-5 relative z-10">
+                <div class="flex flex-col-reverse items-start gap-2 md:flex-row md:justify-between md:gap-4 mb-2 md:mb-5 relative z-10">
                   <h3 class="text-xl md:text-2xl lg:text-3xl font-bold text-slate-800 leading-tight">{it.title}</h3>
                   {it.quarter && (
-                    <span class="text-xs md:text-sm font-semibold px-3 md:px-4 py-1.5 md:py-2 rounded-xl md:rounded-2xl bg-slate-100/80 text-slate-700 shadow-layer-2 backdrop-blur-sm">
+                    <span class="text-xs md:text-sm font-semibold px-3 md:px-4 py-1 md:py-2 rounded-full md:rounded-2xl bg-blue-50 md:bg-slate-100/80 text-blue-700 md:text-slate-700 md:shadow-layer-2 backdrop-blur-sm whitespace-nowrap">
                       {it.quarter}
                     </span>
                   )}
@@ -59,7 +57,7 @@ const { items }: Props = Astro.props;
 
                 
                 <!-- 悬停装饰线条 -->
-                <div class="mt-4 md:mt-6 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700 transform scale-x-0 group-hover:scale-x-100 origin-left bg-blue-400"></div>
+                <div class="hidden lg:block mt-4 md:mt-6 h-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-700 transform scale-x-0 group-hover:scale-x-100 origin-left bg-blue-400"></div>
               </div>
             </li>
           ))}
@@ -81,15 +79,6 @@ const { items }: Props = Astro.props;
     animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
-  /* 响应式调整 */
-  @media (max-width: 1024px) {
-    .lg\\:translate-x-4,
-    .lg\\:-translate-x-2,
-    .lg\\:translate-x-6 {
-      transform: none !important;
-    }
-  }
-  
   /* 增强的悬停效果 */
   .organic-card:hover::before {
     transform: rotate(45deg) scale(1.4);
@@ -97,7 +86,7 @@ const { items }: Props = Astro.props;
   
   /* 卡片悬停时的光效增强 */
   .organic-card:hover {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 28px 52px -14px rgb(var(--theme-700) / 0.32), 0 0 0 1px rgb(var(--theme-400) / 0.3);
   }
   
   /* 状态指示器动画 */

@@ -3,11 +3,12 @@
 
 /* 基础重置和变量 */
 :root {
-  --shadow-layer-1: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-layer-2: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-layer-3: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-layer-4: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-layer-5: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  /* 投影取当前主题的最深色，而不是纯黑，卡片和背景的色调因此连在一起 */
+  --shadow-layer-1: 0 1px 3px 0 rgb(var(--theme-900) / 0.13), 0 1px 2px -1px rgb(var(--theme-900) / 0.13);
+  --shadow-layer-2: 0 4px 6px -1px rgb(var(--theme-900) / 0.13), 0 2px 4px -2px rgb(var(--theme-900) / 0.13);
+  --shadow-layer-3: 0 10px 15px -3px rgb(var(--theme-900) / 0.13), 0 4px 6px -4px rgb(var(--theme-900) / 0.13);
+  --shadow-layer-4: 0 20px 25px -5px rgb(var(--theme-900) / 0.13), 0 8px 10px -6px rgb(var(--theme-900) / 0.13);
+  --shadow-layer-5: 0 25px 50px -12px rgb(var(--theme-900) / 0.3);
   
   /* 冷色调主色系 - 蓝色和紫色 */
   --gradient-trust: linear-gradient(135deg, #3b82f6, #1d4ed8);
@@ -28,6 +29,49 @@
   --texture-geometric: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e2e8f0' fill-opacity='0.15'%3E%3Cpath d='M20 20c0-11.046-8.954-20-20-20v40c11.046 0 20-8.954 20-20z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
+/* 主题色板（RGB 通道）：Tailwind 的 blue-* 全部指向这些变量。
+   Hero 切换版本时在 <html> 上写 data-edition，整站随之换色。 */
+:root {
+  --theme-50: 239 246 255;
+  --theme-100: 219 234 254;
+  --theme-200: 191 219 254;
+  --theme-300: 147 197 253;
+  --theme-400: 96 165 250;
+  --theme-500: 59 130 246;
+  --theme-600: 37 99 235;
+  --theme-700: 29 78 216;
+  --theme-800: 30 64 175;
+  --theme-900: 30 58 138;
+}
+
+/* V2 — 橙色 */
+:root[data-edition='1'] {
+  --theme-50: 255 247 237;
+  --theme-100: 255 237 213;
+  --theme-200: 254 215 170;
+  --theme-300: 253 186 116;
+  --theme-400: 251 146 60;
+  --theme-500: 249 115 22;
+  --theme-600: 234 88 12;
+  --theme-700: 194 65 12;
+  --theme-800: 154 52 18;
+  --theme-900: 124 45 18;
+}
+
+/* V3 — 紫色 */
+:root[data-edition='2'] {
+  --theme-50: 250 245 255;
+  --theme-100: 243 232 255;
+  --theme-200: 233 213 255;
+  --theme-300: 216 180 254;
+  --theme-400: 192 132 252;
+  --theme-500: 168 85 247;
+  --theme-600: 147 51 234;
+  --theme-700: 126 34 206;
+  --theme-800: 107 33 168;
+  --theme-900: 88 28 135;
+}
+
 /* 基础样式 */
 * {
   box-sizing: border-box;
@@ -37,6 +81,8 @@ html {
   height: 100%;
   min-height: 100%;
   scroll-behavior: smooth;
+  /* 隐藏页面滚动条，导航交给右侧的圆点 */
+  scrollbar-width: none;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
@@ -44,13 +90,12 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background-color: #ffffff;
+  /* 单色浅底：取当前版本主题色里最浅的一档（V1 淡蓝 / V2 淡奶油 / V3 淡紫），不是纯白，切换版本时平滑过渡 */
+  background-color: rgb(var(--theme-50));
+  transition: background-color 900ms cubic-bezier(0.4, 0, 0.2, 1);
   color: #1e293b;
   line-height: 1.6;
   overflow-x: hidden;
-  scroll-snap-type: y mandatory;
-  scroll-padding-top: clamp(4rem, 6vh, 5.5rem);
-  scroll-padding-bottom: clamp(3rem, 5vh, 4rem);
 }
 
 /* 容器系统 */
@@ -66,21 +111,52 @@ body {
   max-width: 1200px;
 }
 
+/* 区块高度由内容决定，上下留白统一，相邻区块之间不再各撑满一屏 */
 .section {
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: clamp(2rem, 5vh, 4rem) 0;
+  padding: clamp(2rem, 5vh, 3.5rem) 0;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+}
+
+
+/* 只有首屏占满整个视口 */
+.section--full {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/* 首屏内容在窄屏下保持垂直居中（.section 在窄屏下是 flex-start） */
+.section > .container-narrow.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 @supports (min-height: 100dvh) {
-  .section {
+  .section--full {
     min-height: 100dvh;
+  }
+}
+
+/* 卡片表面：染色毛玻璃。白色里掺入约六成的主题浅色，略透明，背后的背景光透得出来；
+   颜色随版本变化，背景色过渡时卡片同步过渡 */
+.surface {
+  background-color: color-mix(in srgb, rgb(var(--theme-100) / 0.9) 58%, rgb(255 255 255 / 0.8));
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+}
+
+/* 自己没有写 transition 的卡片，才用这条过渡让换版本时颜色渐变；
+   写了 transition-all 的卡片（上浮、放大、投影都要过渡）保持自己的设置，不被覆盖 */
+.surface:not([class*="transition"]) {
+  transition: background-color 900ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 悬停时卡片略微“亮起”：玻璃里的主题色淡一些、白多一些 */
+@media (hover: hover) {
+  .surface:hover {
+    background-color: color-mix(in srgb, rgb(var(--theme-100) / 0.9) 36%, rgb(255 255 255 / 0.92));
   }
 }
 
@@ -190,7 +266,7 @@ body {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgb(var(--theme-500) / 0.05) 0%, transparent 70%);
   transform: rotate(45deg);
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -208,6 +284,65 @@ body {
   transform: translateY(-8px) scale(1.02);
 }
 
+/* 触屏设备没有悬停，避免点击后元素停留在上浮状态 */
+@media (hover: none) {
+  .flowing-element:hover {
+    transform: none;
+  }
+}
+
+/* 移动端横向滑动轨道：卡片并排、露出下一张，md 起由各区块自己的网格接管 */
+@media (max-width: 767.98px) {
+  .snap-rail {
+    display: flex;
+    gap: 0.875rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    /* 出血到屏幕边缘，抵消 .container-narrow 的左右内边距 */
+    margin-inline: -1rem;
+    padding: 0.75rem 1rem 1.5rem;
+    scroll-padding-inline: 1rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .snap-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .snap-rail > * {
+    flex: 0 0 84%;
+    scroll-snap-align: start;
+  }
+}
+
+/* 轨道进度点（由 scroll-helper.js 生成） */
+.rail-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.rail-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #cbd5e1;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;
+}
+
+.rail-dot.is-active {
+  width: 20px;
+  background-color: rgb(var(--theme-500));
+}
+
+@media (min-width: 768px) {
+  .rail-dots {
+    display: none;
+  }
+}
+
 /* 动态间距系统 */
 .space-dynamic-1 { margin: 1.5rem 0; }
 .space-dynamic-2 { margin: 2.5rem 0; }
@@ -215,13 +350,9 @@ body {
 
 /* 响应式设计 */
 @media (max-width: 1024px) {
-  body {
-    scroll-snap-type: y proximity;
-  }
-
   .section {
     align-items: flex-start;
-    padding: clamp(1.5rem, 4vh, 3rem) 0;
+    padding: clamp(1.75rem, 4vh, 2.5rem) 0;
     overflow: visible;
   }
 }
@@ -234,11 +365,6 @@ body {
   .space-dynamic-1 { margin: 1rem 0; }
   .space-dynamic-2 { margin: 1.5rem 0; }
   .space-dynamic-3 { margin: 2rem 0; }
-
-  body {
-    scroll-padding-top: 4rem;
-    scroll-padding-bottom: 3rem;
-  }
 }
 
 /* 动画系统 */
@@ -287,20 +413,8 @@ body {
   animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* 滚动条美化 - 使用纯蓝色 */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #3b82f6;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
+/* 页面滚动条隐藏（滚轮、触摸、键盘滚动不受影响） */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }

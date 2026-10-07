@@ -10,6 +10,20 @@ export default {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
       },
       colors: {
+        // 主题色：所有 blue-* 工具类都走 CSS 变量，随当前版本（V1 蓝 / V2 橙 / V3 紫）整体换色。
+        // 变量定义在 src/styles/global.css 的 :root / :root[data-edition]
+        blue: {
+          50: 'rgb(var(--theme-50) / <alpha-value>)',
+          100: 'rgb(var(--theme-100) / <alpha-value>)',
+          200: 'rgb(var(--theme-200) / <alpha-value>)',
+          300: 'rgb(var(--theme-300) / <alpha-value>)',
+          400: 'rgb(var(--theme-400) / <alpha-value>)',
+          500: 'rgb(var(--theme-500) / <alpha-value>)',
+          600: 'rgb(var(--theme-600) / <alpha-value>)',
+          700: 'rgb(var(--theme-700) / <alpha-value>)',
+          800: 'rgb(var(--theme-800) / <alpha-value>)',
+          900: 'rgb(var(--theme-900) / <alpha-value>)'
+        },
         brand: {
           50: '#eff6ff',
           100: '#dbeafe',

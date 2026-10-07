@@ -7,30 +7,29 @@ export interface Props {
 }
 const { images, title = 'Gallery', description = 'A selection of visuals from the book' }: Props = Astro.props;
 ---
-<section id="gallery" class="section bg-blue-50/25 relative overflow-hidden flex items-center">
-  <div class="absolute inset-0 bg-gradient-to-br from-blue-100/10 via-transparent to-blue-200/5"></div>
+<section id="gallery" class="section relative overflow-hidden flex items-center">
 
   <div class="container-narrow w-full relative z-10 flex flex-col justify-center">
-    <div class="text-center mb-8 space-dynamic-1">
-      <h2 class="text-4xl md:text-6xl font-black text-black mb-4 animate-fade-in-up">
+    <div class="text-center mb-4 md:mb-8">
+      <h2 class="text-3xl md:text-6xl font-black text-black mb-3 md:mb-4 animate-fade-in-up">
         {title}
       </h2>
       {description && (
-        <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+        <p class="text-base md:text-lg text-slate-600 max-w-2xl mx-auto mb-5 md:mb-6 animate-fade-in-up" style="animation-delay: 0.2s;">
           {description}
         </p>
       )}
-      <div class="w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
+      <div class="w-20 md:w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
     </div>
 
-    <!-- Responsive image grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+    <!-- Swipeable photo rail on phones, image grid from md up -->
+    <div class="snap-rail md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 lg:gap-8" data-rail>
       {images.map((img, index) => {
         const item = (typeof img === 'string' ? { src: img, alt: '' } : img) as any;
         return (
-          <figure class="relative rounded-3xl overflow-hidden border border-blue-200/50 bg-white/95 backdrop-blur-sm shadow-layer-3 hover:shadow-layer-5 transition-all duration-500 flowing-element group" onmousemove="{const r=this.getBoundingClientRect(); const x=((event.clientX-r.left)/r.width)*100; const y=((event.clientY-r.top)/r.height)*100; this.style.setProperty('--tx', x+'%'); this.style.setProperty('--ty', y+'%')}" onmouseenter="{this.classList.add('active')}" onmouseleave="{this.style.setProperty('--tx','50%'); this.style.setProperty('--ty','50%'); this.classList.remove('active')}">
+          <figure class="relative rounded-3xl overflow-hidden border border-blue-200/50 surface shadow-layer-3 hover:shadow-layer-5 transition-all duration-500 flowing-element group" onmousemove="{const r=this.getBoundingClientRect(); const x=((event.clientX-r.left)/r.width)*100; const y=((event.clientY-r.top)/r.height)*100; this.style.setProperty('--tx', x+'%'); this.style.setProperty('--ty', y+'%')}" onmouseenter="{this.classList.add('active')}" onmouseleave="{this.style.setProperty('--tx','50%'); this.style.setProperty('--ty','50%'); this.classList.remove('active')}">
             <a href={item.src} target="_blank" rel="noopener" class="block">
-              <div class="w-full aspect-[4/3] bg-gradient-to-br from-blue-50 to-blue-100">
+              <div class="w-full aspect-[4/5] md:aspect-[4/3] bg-gradient-to-br from-blue-50 to-blue-100">
                 <img src={item.src} alt={item.alt || `Gallery image ${index + 1}`} loading="lazy" decoding="async" class="h-full w-full object-cover transition-transform duration-300 ease-out" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
                 <div class="hidden absolute inset-0 items-center justify-center">
                   <div class="text-center text-slate-600">
@@ -50,7 +49,8 @@ const { images, title = 'Gallery', description = 'A selection of visuals from th
         );
       })}
     </div>
-    
+    <div class="rail-dots" data-rail-dots aria-hidden="true"></div>
+
   </div>
 </section>
 
@@ -62,11 +62,14 @@ const { images, title = 'Gallery', description = 'A selection of visuals from th
   /* Grid polish */
   /* Hover scale in-place with cursor-aware origin (card + image) */
   figure.group { --tx: 50%; --ty: 50%; transform-origin: var(--tx) var(--ty); z-index: 0; position: relative; }
-  figure.group:hover { transform: scale(1.05) translateY(-6px); }
   figure.group.active { z-index: 20; }
   figure.group img { transform-origin: var(--tx) var(--ty); }
-  figure.group:hover img { transform: scale(1.1); filter: saturate(1.06); box-shadow: var(--shadow-layer-4); }
-  a:focus-visible { outline: 2px solid #3b82f6; outline-offset: 4px; border-radius: 1rem; }
+  /* Hover zoom only where there is a real pointer — a tap would leave it stuck */
+  @media (hover: hover) {
+    figure.group:hover { transform: scale(1.05) translateY(-6px); }
+    figure.group:hover img { transform: scale(1.1); filter: saturate(1.06); box-shadow: var(--shadow-layer-4); }
+  }
+  a:focus-visible { outline: 2px solid rgb(var(--theme-500)); outline-offset: 4px; border-radius: 1rem; }
 </style>
 
 

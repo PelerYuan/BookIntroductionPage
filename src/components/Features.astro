@@ -9,131 +9,154 @@ export interface Feature {
 }
 export interface Props { features: Feature[] }
 const { features }: Props = Astro.props;
+
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
-<section id="features" class="section bg-blue-50/40 relative overflow-hidden">
-  <!-- 简洁的蓝色背景 -->
-  <div class="absolute inset-0 bg-gradient-to-br from-blue-100/15 via-transparent to-blue-200/8"></div>
+<section id="features" class="section relative overflow-hidden">
 
   <div class="container-narrow w-full relative z-10 flex flex-col justify-center">
     <!-- 标题区域 -->
-    <div class="text-center mb-16 space-dynamic-3">
-      <h2 class="text-4xl md:text-6xl font-black text-black mb-6 animate-fade-in-up">
+    <div class="text-center mb-6 md:mb-10 lg:mb-12">
+      <h2 class="text-3xl md:text-6xl font-black text-black mb-3 md:mb-4 animate-fade-in-up">
         Book Features
       </h2>
-      <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8 animate-fade-in-up" style="animation-delay: 0.2s;">
+      <p class="text-base md:text-lg text-slate-600 max-w-2xl mx-auto mb-5 md:mb-6 animate-fade-in-up" style="animation-delay: 0.2s;">
         Explore the unique charm and core advantages of this book
       </p>
-      <div class="w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
+      <div class="w-20 md:w-32 h-1 bg-blue-500 mx-auto rounded-full shadow-layer-2 animate-fade-in-up" style="animation-delay: 0.4s;"></div>
     </div>
-    
 
-    
-         <!-- 主要内容区域 -->
-     <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
-       
-       <!-- 左侧功能列表 -->
-       <div class="lg:col-span-2 space-y-4 relative">
-         {features.map((feature, index) => (
-           <div 
-             class="feature-item group cursor-pointer"
-             data-feature-index={index}
-           >
-             <!-- 功能卡片 -->
-             <div class="bg-white/95 backdrop-blur-sm rounded-2xl border border-blue-200/50 p-6 transition-all duration-500 hover:shadow-layer-3 hover:scale-105 relative overflow-hidden">
-               
-                              <!-- 进度条背景 -->
-                <div class="absolute top-0 left-0 h-1 bg-blue-200 rounded-t-2xl transition-all duration-1000 ease-out" 
-                     style="width: 0%"></div>
-               
-               <!-- 主要内容 -->
-               <div class="flex items-start gap-4">
-                 <!-- 图标 -->
-                 <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                   <span class="text-2xl">{feature.icon}</span>
-                 </div>
-                 
-                 <!-- 文字内容 -->
-                 <div class="flex-1 min-w-0">
-                   <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">
-                     {feature.title}
-                   </h3>
-                   
-                   <!-- 基础描述 -->
-                   <p class="text-slate-600 text-sm leading-relaxed mb-3">
-                     {feature.description}
-                   </p>
-                   
-                   
-                   
-                   <!-- 详细内容（悬停展开） -->
-                   <div class="feature-details max-h-0 overflow-hidden transition-all duration-500 ease-out">
-                     {feature.details && (
-                       <div class="space-y-2 pt-3 border-t border-blue-100">
-                         {feature.details.map(detail => (
-                           <div class="flex items-start gap-2">
-                             <div class="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
-                             <p class="text-slate-600 text-sm">{detail}</p>
-                           </div>
-                         ))}
-                       </div>
-                     )}
-                   </div>
-                 </div>
-                 
-                 <!-- 展开指示器 -->
-                 <div class="w-6 h-6 flex items-center justify-center text-blue-400 transition-transform duration-300 group-hover:rotate-90">
-                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                   </svg>
-                 </div>
-               </div>
-             </div>
-           </div>
-         ))}
-       </div>
-       
-       <!-- 右侧图片展示 -->
-       <div class="lg:col-span-3 relative flex items-center justify-center">
-         <div class="feature-image-container bg-white/95 backdrop-blur-sm rounded-3xl border border-blue-200/50 p-8 shadow-layer-3 relative overflow-hidden w-full max-w-2xl">
-           
-           <!-- 图片切换动画容器 -->
-           <div class="feature-images relative w-full transition-opacity duration-500">
-             {features.map((feature, index) => (
-               <div 
-                 class={`feature-image ${index === 0 ? 'block' : 'hidden'} transition-opacity duration-500`}
-                 data-feature-index={index}
-               >
-                 <div class="w-full bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl overflow-hidden">
-                   <img 
-                     src={feature.image} 
-                     alt={feature.title}
-                     class="w-full h-auto object-contain rounded-2xl"
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                   />
-                   <!-- 图片加载失败时的备用显示 -->
-                   <div class="hidden w-full min-h-[300px] flex items-center justify-center">
-                     <div class="text-center">
-                       <div class="text-6xl mb-4">{feature.icon}</div>
-                       <h3 class="text-2xl font-bold text-slate-800 mb-2">{feature.title}</h3>
-                       <p class="text-slate-600 max-w-md">{feature.description}</p>
-                     </div>
-                   </div>
-                 </div>
-               </div>
-             ))}
-           </div>
-         </div>
-       </div>
-     </div>
+    <!-- 主要内容区域：移动端展示台在上、功能列表在下；桌面端左列表右展示台，两侧等高 -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-12 items-start lg:items-stretch">
+
+      <!-- 左侧功能列表（高度由脚本锁定为三种展开状态里最高的一个，切换时下方内容不会动） -->
+      <div id="feature-list" class="lg:col-span-2 space-y-3 lg:space-y-4 relative">
+        {features.map((feature, index) => (
+          <div
+            class="feature-item group cursor-pointer"
+            data-feature-index={index}
+          >
+            <!-- 功能卡片 -->
+            <div class="surface rounded-2xl border border-blue-200/50 p-4 lg:p-6 transition-all duration-500 lg:hover:shadow-layer-3 lg:hover:scale-105 relative overflow-hidden">
+
+              <!-- 进度条背景 -->
+              <div class="feature-progress absolute top-0 left-0 h-1 bg-blue-200 rounded-t-2xl transition-all duration-1000 ease-out"
+                   style="width: 0%"></div>
+
+              <!-- 主要内容 -->
+              <div class="flex items-start gap-3 lg:gap-4">
+                <!-- 图标 -->
+                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <span class="text-xl lg:text-2xl">{feature.icon}</span>
+                </div>
+
+                <!-- 文字内容 -->
+                <div class="flex-1 min-w-0">
+                  <h3 class="feature-title text-base lg:text-xl font-bold text-slate-800 lg:mb-2 group-hover:text-blue-600 transition-colors">
+                    {feature.title}
+                  </h3>
+
+                  <!-- 基础描述 -->
+                  <p class="feature-desc text-slate-600 text-sm leading-relaxed mt-1 lg:mt-0 mb-3">
+                    {feature.description}
+                  </p>
+
+                  <!-- 详细内容（选中时展开） -->
+                  <div class="feature-details max-h-0 overflow-hidden transition-all duration-500 ease-out">
+                    {feature.details && (
+                      <div class="space-y-2 pt-3 border-t border-blue-100">
+                        {feature.details.map(detail => (
+                          <div class="flex items-start gap-2">
+                            <div class="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
+                            <p class="text-slate-600 text-sm">{detail}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <!-- 展开指示器 -->
+                <div class="feature-chevron w-6 h-6 mt-2 lg:mt-0 flex items-center justify-center text-blue-400 transition-transform duration-300 lg:group-hover:rotate-90">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- 右侧展示台：每张图是一页“书页”，翻到哪一项，对应的页面从右侧滑入、上一页向左淡出 -->
+      <div class="lg:col-span-3 order-first lg:order-none">
+        <div class="feature-stage surface border border-blue-200/50 shadow-layer-3">
+
+          <div class="feature-sheets" aria-live="polite">
+            {features.map((feature, index) => (
+              <figure
+                class={`feature-sheet ${index === 0 ? 'is-active' : ''}`}
+                data-feature-index={index}
+                style={`--o:${index};--oa:${index}`}
+                aria-hidden={index === 0 ? 'false' : 'true'}
+              >
+                <img
+                  src={feature.image}
+                  alt={feature.title}
+                  decoding="async"
+                  draggable="false"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                />
+                <!-- 图片加载失败时的备用显示 -->
+                <div class="feature-sheet__fallback">
+                  <span class="text-5xl mb-3">{feature.icon}</span>
+                  <h3 class="text-xl font-bold text-slate-800 mb-1">{feature.title}</h3>
+                  <p class="text-slate-600 text-sm max-w-xs">{feature.description}</p>
+                </div>
+              </figure>
+            ))}
+          </div>
+
+          <div class="feature-caption">
+            <div class="feature-caption__text">
+              {features.map((feature, index) => (
+                <p class={`feature-caption__item ${index === 0 ? 'is-active' : ''}`} data-feature-index={index}>
+                  <span class="feature-caption__num">{pad(index + 1)}<i>/</i>{pad(features.length)}</span>
+                  <span class="feature-caption__title">{feature.title}</span>
+                </p>
+              ))}
+            </div>
+            <div class="feature-pager" role="tablist" aria-label="Book features">
+              {features.map((feature, index) => (
+                <button
+                  type="button"
+                  role="tab"
+                  class={`feature-pager__dot ${index === 0 ? 'is-active' : ''}`}
+                  data-feature-index={index}
+                  aria-label={feature.title}
+                  aria-selected={index === 0 ? 'true' : 'false'}
+                ></button>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <script>
   // 功能列表交互逻辑
   document.addEventListener('DOMContentLoaded', function() {
-    const featureItems = document.querySelectorAll('.feature-item');
-    const featureImages = document.querySelectorAll('.feature-image');
-    
+    const section = document.getElementById('features');
+    const list = document.getElementById('feature-list');
+    const featureItems = Array.from(document.querySelectorAll('.feature-item'));
+    const sheets = Array.from(document.querySelectorAll('.feature-sheet'));
+    const captions = Array.from(document.querySelectorAll('.feature-caption__item'));
+    const pagers = Array.from(document.querySelectorAll('.feature-pager__dot'));
+    if (!section || !list || !featureItems.length) return;
+
     let currentIndex = 0;
     let autoPlayInterval;
     let isAutoPlayStarted = false;
@@ -142,9 +165,9 @@ const { features }: Props = Astro.props;
     // 初始化自动播放
     function startAutoPlay() {
       if (isAutoPlayStarted) return; // 防止重复启动
-      
+
       isAutoPlayStarted = true;
-      
+
       autoPlayInterval = setInterval(() => {
         currentIndex = (currentIndex + 1) % featureItems.length;
         updateActiveFeature(currentIndex);
@@ -164,9 +187,11 @@ const { features }: Props = Astro.props;
       // 更新功能列表
       featureItems.forEach((item, i) => {
         const card = item.querySelector('.feature-item > div');
-        const progressBar = item.querySelector('.absolute.top-0.left-0');
+        const progressBar = item.querySelector('.feature-progress');
         const details = item.querySelector('.feature-details');
-        
+
+        item.classList.toggle('is-active', i === index);
+
         if (i === index) {
           card.classList.add('ring-2', 'ring-blue-400');
           progressBar.style.width = '100%';
@@ -178,24 +203,52 @@ const { features }: Props = Astro.props;
         }
       });
 
-      // 更新图片显示
-      featureImages.forEach((image, i) => {
-        if (i === index) {
-          image.classList.remove('hidden');
-          image.classList.add('block');
-        } else {
-          image.classList.remove('block');
-          image.classList.add('hidden');
-        }
+      // 更新展示台：页面相对当前页的位置决定它在哪一侧、倾斜多少
+      sheets.forEach((sheet, i) => {
+        const offset = i - index;
+        sheet.style.setProperty('--o', String(offset));
+        sheet.style.setProperty('--oa', String(Math.abs(offset)));
+        sheet.classList.toggle('is-active', i === index);
+        sheet.setAttribute('aria-hidden', i === index ? 'false' : 'true');
       });
+      captions.forEach((caption, i) => caption.classList.toggle('is-active', i === index));
+      pagers.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === index);
+        dot.setAttribute('aria-selected', i === index ? 'true' : 'false');
+      });
+    }
+
+    // 锁定列表高度：把三种展开状态各量一遍，取最高的作为固定高度，
+    // 这样无论悬停哪一项、自动轮播到哪一项，整个板块的高度都不变，下方的 Reader Reviews 不会被推着走。
+    // 量的过程中关掉所有过渡，量完恢复原状态，不会有肉眼可见的闪动。
+    function lockListHeight() {
+      const keep = currentIndex;
+      section.classList.add('is-measuring');
+      list.style.minHeight = '';
+
+      let tallest = 0;
+      featureItems.forEach((_, i) => {
+        updateActiveFeature(i);
+        // 用带小数的精确高度，最后向上取整；offsetHeight 会取整，会让个别状态多出 1px
+        tallest = Math.max(tallest, list.getBoundingClientRect().height);
+      });
+
+      updateActiveFeature(keep);
+      void list.offsetHeight; // 先让恢复后的状态落定，再重新开启过渡
+      section.classList.remove('is-measuring');
+      list.style.minHeight = Math.ceil(tallest) + 'px';
+    }
+
+    function goTo(index) {
+      stopAutoPlay();
+      currentIndex = index;
+      updateActiveFeature(index);
     }
 
     // 鼠标悬停事件
     featureItems.forEach((item, index) => {
       item.addEventListener('mouseenter', () => {
-        stopAutoPlay();
-        currentIndex = index;
-        updateActiveFeature(index);
+        goTo(index);
       });
 
       item.addEventListener('mouseleave', () => {
@@ -206,20 +259,33 @@ const { features }: Props = Astro.props;
     // 点击事件
     featureItems.forEach((item, index) => {
       item.addEventListener('click', () => {
-        stopAutoPlay();
-        currentIndex = index;
-        updateActiveFeature(index);
+        goTo(index);
         // 3秒后重新开始自动播放
+        setTimeout(startAutoPlay, 3000);
+      });
+    });
+
+    // 展示台下方的页码点
+    pagers.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        goTo(index);
         setTimeout(startAutoPlay, 3000);
       });
     });
 
     // 页面加载完成后立即初始化第一个功能
     updateActiveFeature(0);
-    
+    lockListHeight();
+
+    // 字体加载完成、窗口宽度变化后文字换行会变，需要重新量一次
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(lockListHeight);
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(lockListHeight, 150);
+    });
+
     // 监听页面滚动，当特色页面进入视口时开始自动播放
-    const featuresSection = document.getElementById('features');
-    
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && !isAutoPlayStarted) {
@@ -232,10 +298,8 @@ const { features }: Props = Astro.props;
     }, {
       threshold: 0.3 // 当30%的页面可见时触发
     });
-    
-    if (featuresSection) {
-      observer.observe(featuresSection);
-    }
+
+    observer.observe(section);
   });
 </script>
 
@@ -245,32 +309,231 @@ const { features }: Props = Astro.props;
     opacity: 0;
     animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
-  
-  /* 功能卡片悬停效果 */
-  .feature-item:hover .feature-details {
-    max-height: 200px !important;
+
+  /* 量高度时关掉整个板块的过渡，避免展开/收起动画干扰测量 */
+  #features.is-measuring *,
+  #features.is-measuring *::before,
+  #features.is-measuring *::after {
+    transition: none !important;
   }
-  
+
+  /* 移动端：未选中的卡片只保留图标和标题 */
+  @media (max-width: 1023.98px) {
+    .feature-item:not(.is-active) .feature-desc {
+      display: none;
+    }
+
+    .feature-item:not(.is-active) .feature-title {
+      line-height: 2.5rem; /* 与图标等高，单行标题垂直居中 */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .feature-item.is-active .feature-chevron {
+      transform: rotate(90deg);
+    }
+  }
+
+  /* ── 右侧展示台 ──────────────────────────────────────────────────────── */
+  .feature-stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: min(82vw, 23rem);
+    border-radius: 1.25rem;
+    overflow: hidden;
+  }
+
+  /* 桌面端：撑满与左侧列表同高，列表矮的话至少也有 28rem，板块高度因此始终固定 */
+  @media (min-width: 1024px) {
+    .feature-stage {
+      height: 100%;
+      min-height: 28rem;
+      border-radius: 1.5rem;
+    }
+  }
+
+  /* 展示台背后一团主题色的“聚光”，让书页像被灯照着 */
+  .feature-stage::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: 80%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+    background: radial-gradient(closest-side, rgb(var(--theme-300) / 0.55), transparent);
+    pointer-events: none;
+    transition: background 900ms ease;
+  }
+
+  /* 书页区：定义为尺寸容器，图片用 cqw / cqh 限制在区域内，不论图片比例如何都完整显示 */
+  .feature-sheets {
+    position: relative;
+    flex: 1 1 0;
+    min-height: 0;
+    container-type: size;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem 1.25rem 0;
+  }
+
+  .feature-sheet {
+    grid-area: 1 / 1;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    visibility: hidden;
+    /* --o：相对当前页的位置（负＝左侧、正＝右侧），--oa：它的绝对值 */
+    transform:
+      translateX(calc(var(--o, 0) * 9%))
+      rotate(calc(var(--o, 0) * 2.5deg))
+      scale(calc(1 - var(--oa, 0) * 0.05));
+    transition:
+      transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 450ms ease,
+      visibility 0s linear 700ms;
+  }
+
+  .feature-sheet.is-active {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 550ms ease 100ms,
+      visibility 0s linear 0s;
+  }
+
+  .feature-sheet img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: calc(100cqw - 2.5rem);
+    max-height: calc(100cqh - 1.25rem);
+    border-radius: 0.875rem;
+    background: #fff;
+    box-shadow:
+      0 0 0 1px rgb(var(--theme-200) / 0.8),
+      0 24px 40px -22px rgb(var(--theme-900) / 0.4),
+      0 6px 14px -8px rgb(var(--theme-900) / 0.2);
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .feature-sheet__fallback {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* ── 说明栏：编号 + 标题，右侧是页码点 ────────────────────────────────── */
+  .feature-caption {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem 1rem;
+  }
+
+  .feature-caption__text {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .feature-caption__item {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin: 0;
+    min-width: 0;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 350ms ease, transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .feature-caption__item.is-active {
+    opacity: 1;
+    transform: none;
+    transition-delay: 150ms;
+  }
+
+  .feature-caption__num {
+    flex: none;
+    font: 600 0.7rem/1 ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+    letter-spacing: 0.18em;
+    color: rgb(var(--theme-600));
+  }
+
+  .feature-caption__num i {
+    font-style: normal;
+    margin: 0 0.15em;
+    opacity: 0.45;
+  }
+
+  .feature-caption__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  .feature-pager {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex: none;
+  }
+
+  .feature-pager__dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    padding: 0;
+    border: 0;
+    border-radius: 9999px;
+    background: rgb(var(--theme-300) / 0.7);
+    cursor: pointer;
+    transition: width 400ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 400ms ease;
+  }
+
+  .feature-pager__dot.is-active {
+    width: 1.25rem;
+    background: rgb(var(--theme-500));
+  }
+
+  .feature-pager__dot:focus-visible {
+    outline: 2px solid rgb(var(--theme-500));
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feature-sheet,
+    .feature-caption__item,
+    .feature-pager__dot {
+      transition: none;
+    }
+
+    .feature-sheet {
+      transform: none;
+    }
+  }
+
   /* 进度条动画 */
-  .absolute.top-0.left-0 {
+  .feature-progress {
     transition: width 1s ease-out;
   }
-  
+
   /* 固定 features section 顶部对齐，防止卡片展开时标题抖动 */
   #features {
     align-items: flex-start;
-    padding-top: clamp(3rem, 8vh, 6rem);
-    padding-bottom: clamp(3rem, 8vh, 6rem);
-  }
-
-  /* 响应式调整 */
-  @media (max-width: 1024px) {
-    .lg\\:grid-cols-5 {
-      grid-template-columns: 1fr;
-    }
-    .lg\\:col-span-2,
-    .lg\\:col-span-3 {
-      grid-column: span 1;
-    }
   }
 </style>

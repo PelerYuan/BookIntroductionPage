@@ -18,6 +18,48 @@ class ScrollHelper {
     
     // 优化滚动性能
     this.optimizeScrollPerformance();
+
+    // 移动端横向轨道的进度点
+    this.initRails();
+  }
+
+  // 为每个 [data-rail] 生成进度点，并随横向滚动高亮最靠近的卡片
+  initRails() {
+    document.querySelectorAll('[data-rail]').forEach((rail) => {
+      const dotsEl = rail.nextElementSibling;
+      if (!dotsEl || !dotsEl.hasAttribute('data-rail-dots')) return;
+
+      const items = Array.from(rail.children);
+      const dots = items.map(() => {
+        const dot = document.createElement('span');
+        dot.className = 'rail-dot';
+        dotsEl.appendChild(dot);
+        return dot;
+      });
+
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const railLeft = rail.getBoundingClientRect().left;
+        let nearest = 0;
+        let best = Infinity;
+        items.forEach((item, i) => {
+          const distance = Math.abs(item.getBoundingClientRect().left - railLeft);
+          if (distance < best) { best = distance; nearest = i; }
+        });
+        // 滑到末尾时最后一张无法对齐到起点，直接点亮最后一个点
+        if (rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 2) nearest = items.length - 1;
+        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === nearest));
+      };
+
+      rail.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      }, { passive: true });
+
+      dots[0]?.classList.add('is-active');
+    });
   }
 
   // 键盘导航支持 - 已禁用，允许默认键盘滚动

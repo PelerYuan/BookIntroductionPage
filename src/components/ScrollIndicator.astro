@@ -147,7 +147,7 @@ const { sections }: Props = Astro.props;
   }
   
   .scroll-indicator-dot:focus-visible {
-    outline: 2px solid theme('colors.blue.500');
+    outline: 2px solid rgb(var(--theme-500));
     outline-offset: 4px;
     border-radius: 50%;
   }
@@ -173,10 +173,10 @@ const { sections }: Props = Astro.props;
   
   @keyframes pulse-glow {
     0%, 100% { 
-      filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.3));
+      filter: drop-shadow(0 0 4px rgb(var(--theme-500) / 0.3));
     }
     50% { 
-      filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+      filter: drop-shadow(0 0 8px rgb(var(--theme-500) / 0.6));
     }
   }
   
@@ -197,7 +197,7 @@ const { sections }: Props = Astro.props;
   }
   
   .scroll-indicator-dot::-webkit-scrollbar-thumb {
-    background: rgba(59, 130, 246, 0.3);
+    background: rgb(var(--theme-500) / 0.3);
     border-radius: 2px;
   }
 </style>
